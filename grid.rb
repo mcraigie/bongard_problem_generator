@@ -2,6 +2,18 @@ require './errors.rb'
 require './cell.rb'
 
 module Bongard
+
+# cell_data comes in like this:
+# [ [1,2,3],
+#   [4,5,6],
+#   [7,8,9] ]
+
+# cells at 1-indexed and the origin is top left
+# e.g.
+# (1,1) (2,1) (3,1)
+# (1,2) (2,2) (3,2)
+# (1,3) (2,3) (3,3)
+
   class Grid
     attr_reader :size
 
@@ -50,13 +62,20 @@ module Bongard
     end
 
     # 1-indexed
-    def cell_at(col_id, row_id); end
+    def cell_at(col_id, row_id)
+      return nil unless col_id.between?(1, size) && row_id.between?(1, size)
+      @cols[col_id - 1][row_id - 1]
+    end
 
     # 1-indexed
-    def cells_in_row(row_id); end
+    def cells_in_row(row_id)
+      @rows[row_id - 1]
+    end
 
     # 1-indexed
-    def cells_in_col(col_id); end
+    def cells_in_col(col_id)
+      @cols[col_id - 1]
+    end
 
     def edge_cells; end
 

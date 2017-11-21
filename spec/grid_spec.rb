@@ -105,30 +105,32 @@ describe Bongard::Grid do
   end
 
   describe '#any?' do
-    it 'returns true if any cell matches the block' do
+    before(:all) do
       cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-      grid = Bongard::Grid.new(cells, 3)
-      expect(grid.any? { |c| c.value == 5 }).to eq(true)
+      @grid = Bongard::Grid.new(cells, 3)
+    end
+
+    it 'returns true if any cell matches the block' do
+      expect(@grid.any? { |c| c.value == 5 }).to eq(true)
     end
 
     it 'returns false if no cell matches the block' do
-      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-      grid = Bongard::Grid.new(cells, 3)
-      expect(grid.any? { |c| c.value == 0 }).to eq(false)
+      expect(@grid.any? { |c| c.value == 0 }).to eq(false)
     end
   end
 
   describe '#all?' do
-    it 'returns true if all cells match the block' do
+    before(:all) do
       cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-      grid = Bongard::Grid.new(cells, 3)
-      expect(grid.all? { |c| c.value > 0 }).to eq(true)
+      @grid = Bongard::Grid.new(cells, 3)
+    end
+
+    it 'returns true if all cells match the block' do
+      expect(@grid.all? { |c| c.value > 0 }).to eq(true)
     end
 
     it 'returns false if any cell does not match the block' do
-      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-      grid = Bongard::Grid.new(cells, 3)
-      expect(grid.all? { |c| c.value != 2 }).to eq(false)
+      expect(@grid.all? { |c| c.value != 2 }).to eq(false)
     end
   end
 
@@ -159,6 +161,37 @@ describe Bongard::Grid do
       cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
       grid = Bongard::Grid.new(cells, 3)
       expect(grid.count { |c| c.value == 5 }).to eq(1)
+    end
+  end
+
+  describe '#cell_at' do
+    before(:all) do
+      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      @grid = Bongard::Grid.new(cells, 3)
+    end
+
+    it 'gets the cell at the specified position' do
+      expect(@grid.cell_at(1,1).value).to eq(1)
+    end
+
+    it 'gets the cell at the specified position' do
+      expect(@grid.cell_at(3,3).value).to eq(9)
+    end
+
+    it 'returns nil if you specify a cell beyond the grid size' do
+      expect(@grid.cell_at(0,0)).to eq(nil)
+    end
+
+    it 'returns nil if you specify a cell beyond the grid size' do
+      expect(@grid.cell_at(0,1)).to eq(nil)
+    end
+
+    it 'returns nil if you specify a cell beyond the grid size' do
+      expect(@grid.cell_at(4,0)).to eq(nil)
+    end
+
+    it 'returns nil if you specify a cell beyond the grid size' do
+      expect(@grid.cell_at(4,4)).to eq(nil)
     end
   end
 
