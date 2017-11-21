@@ -17,6 +17,7 @@ module Bongard
   class Grid
     attr_reader :size
     attr_reader :edge_cells
+    attr_reader :corner_cells
 
     def initialize(cell_data, size)
       @size = size
@@ -30,6 +31,7 @@ module Bongard
       @cols = @rows.transpose
       @cells = @rows.flatten
       @edge_cells = calculate_edge_cells
+      @corner_cells = calculate_corner_cells
     end
 
     def conforms_to_size?(cell_data)
@@ -90,7 +92,12 @@ module Bongard
       result.flatten
     end
 
-    def corner_cells; end
+    def calculate_corner_cells
+      result = []
+      result << cells_in_row(1).values_at(0,-1)
+      result << cells_in_row(size).values_at(0,-1)
+      result.flatten
+    end
 
     def corner_cell(corner); end
 

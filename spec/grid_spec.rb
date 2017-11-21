@@ -261,4 +261,20 @@ describe Bongard::Grid do
     end
   end
 
+  describe '#corner_cells' do
+    it 'returns an array containing all corner cells' do
+      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      grid = Bongard::Grid.new(cells, 3)
+      results = grid.corner_cells.map { |c| c.value }.sort
+      expect(results).to eq([1, 3, 7, 9])
+    end
+
+    it 'returns an array containing all corner cells' do
+      cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+      grid = Bongard::Grid.new(cells, 4)
+      results = grid.corner_cells.map { |c| c.value }.sort
+      expect(results).to eq([1, 4, 13, 16])
+    end
+  end
+
 end
