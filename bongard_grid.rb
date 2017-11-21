@@ -1,21 +1,25 @@
+require './errors.rb'
 class BongardGrid
   attr_reader :size
 
   def initialize(cell_data, size)
     @size = size
-    @cell_data = cell_data
 
-    raise "bad data" unless cell_data_conforms_to_size?
-    raise "bad data" if cell_data_contains_nil?
+
+    raise CellDataNilError if contains_nil?(cell_data)
+    raise CellDataSizeError unless conforms_to_size?(cell_data)
+    raise BelowMinimumSizeError unless @size >= 3
   end
 
-  def cell_data_conforms_to_size?
-    return false if @cell_data.length != @size
-    return false unless @cell_data.all? { |row| row.length == @size }
+  def conforms_to_size?(cell_data)
+    return false if cell_data.length != @size
+    return false unless cell_data.all? { |row| row.length == @size }
+    return true
   end
 
-  def cell_data_contains_nil?
-    return true if @cell_data.any? { |row| row.nil? || row.any? { |e| e.nil? } }
+  def contains_nil?(cell_data)
+    return true if cell_data.any? { |row| row.nil? || row.any? { |e| e.nil? } }
+    return false
   end
 
   def each(&block); end
