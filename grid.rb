@@ -26,7 +26,8 @@ module Bongard
       raise CellDataSizeError unless conforms_to_size?(cell_data)
       raise BelowMinimumSizeError unless @size >= 3
 
-      # intentionally trading memory for convenience
+      # intentionally trading memory for convenience and increased
+      # performance when the grid may be accessed many times
       @rows = cell_data.map { |row| row.map { |e| Cell.new(e) } }
       @cols = @rows.transpose
       @cells = @rows.flatten
