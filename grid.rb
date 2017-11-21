@@ -12,6 +12,7 @@ module Bongard
       raise CellDataSizeError unless conforms_to_size?(cell_data)
       raise BelowMinimumSizeError unless @size >= 3
 
+      # intentionally trading memory for convenience
       @rows = cell_data.map { |row| row.map { |e| Cell.new(e) } }
       @cols = @rows.transpose
       @cells = @rows.flatten
@@ -48,23 +49,28 @@ module Bongard
       @cells.count &block
     end
 
-    def at_cell(col_id, row_id); end
+    # 1-indexed
+    def cell_at(col_id, row_id); end
 
-    def at_row(row_id); end
+    # 1-indexed
+    def cells_in_row(row_id); end
 
-    def at_col(col_id); end
+    # 1-indexed
+    def cells_in_col(col_id); end
 
-    def at_edges; end
+    def edge_cells; end
 
-    def at_corners; end
+    def corner_cells; end
 
-    def at_center; end
+    def corner_cell(corner); end
+
+    def center_cell; end
 
     def match?(pattern_selector); end
 
-    def rotate; end
+    def rotate(n); end
 
-    def mirror; end
+    def mirror(axis); end
 
     def to_s; end
 
