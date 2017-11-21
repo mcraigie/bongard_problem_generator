@@ -4,6 +4,18 @@ class BongardGrid
   def initialize(cell_data, size)
     @size = size
     @cell_data = cell_data
+
+    raise "bad data" unless cell_data_conforms_to_size?
+    raise "bad data" if cell_data_contains_nil?
+  end
+
+  def cell_data_conforms_to_size?
+    return false if @cell_data.length != @size
+    return false unless @cell_data.all? { |row| row.length == @size }
+  end
+
+  def cell_data_contains_nil?
+    return true if @cell_data.any? { |row| row.nil? || row.any? { |e| e.nil? } }
   end
 
   def each(&block); end
