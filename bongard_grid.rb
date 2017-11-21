@@ -6,8 +6,6 @@ class BongardGrid
     @cell_data = cell_data
   end
 
-  def size; end
-
   def each(&block); end
 
   def any?(&block); end
