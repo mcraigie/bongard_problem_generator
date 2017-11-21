@@ -99,9 +99,11 @@ module Bongard
       result.flatten
     end
 
-    def corner_cell(corner); end
-
-    def center_cell; end
+    def center_cell
+      return nil if size.even?
+      half_way = (size / 2.0).ceil
+      cell_at(half_way, half_way)
+    end
 
     def match?(pattern_selector); end
 

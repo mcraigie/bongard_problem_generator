@@ -277,4 +277,18 @@ describe Bongard::Grid do
     end
   end
 
+  describe '#center_cell' do
+    it 'returns the center cell if the grid size is odd' do
+      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      grid = Bongard::Grid.new(cells, 3)
+      expect(grid.center_cell.value).to eq(5)
+    end
+
+    it 'returns nil if the grid size is even' do
+      cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+      grid = Bongard::Grid.new(cells, 4)
+      expect(grid.center_cell).to eq(nil)
+    end
+  end
+
 end
