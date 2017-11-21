@@ -32,15 +32,21 @@ module Bongard
       @cells.each &block
     end
 
-    def any?(&block); end
+    def any?(&block)
+      @cells.any? &block
+    end
 
-    def all?(&block); end
+    def all?(&block)
+      @cells.all? &block
+    end
 
-    def find(&block); end
+    def find_all(&block)
+      @cells.find_all &block
+    end
 
-    def count(&block); end
-
-    def map(&block); end
+    def count(&block)
+      @cells.count &block
+    end
 
     def at_cell(col_id, row_id); end
 

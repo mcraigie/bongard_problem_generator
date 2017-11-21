@@ -103,4 +103,63 @@ describe Bongard::Grid do
       expect(grid.width).to eq(grid.size)
     end
   end
+
+  describe '#any?' do
+    it 'returns true if any cell matches the block' do
+      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      grid = Bongard::Grid.new(cells, 3)
+      expect(grid.any? { |c| c.value == 5 }).to eq(true)
+    end
+
+    it 'returns false if no cell matches the block' do
+      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      grid = Bongard::Grid.new(cells, 3)
+      expect(grid.any? { |c| c.value == 0 }).to eq(false)
+    end
+  end
+
+  describe '#all?' do
+    it 'returns true if all cells match the block' do
+      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      grid = Bongard::Grid.new(cells, 3)
+      expect(grid.all? { |c| c.value > 0 }).to eq(true)
+    end
+
+    it 'returns false if any cell does not match the block' do
+      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      grid = Bongard::Grid.new(cells, 3)
+      expect(grid.all? { |c| c.value != 2 }).to eq(false)
+    end
+  end
+
+  describe '#find' do
+    it 'returns an array of cells that meet the block criteria' do
+      cells = [[1, 2, 3], [5, 5, 5], [7, 8, 9]]
+      grid = Bongard::Grid.new(cells, 3)
+      find_all_results = grid.find_all { |c| c.value == 5 }.map { |c| c.value }
+      expect(find_all_results).to eq([5, 5, 5])
+    end
+
+    it 'returns an array of cells that meet the block criteria' do
+      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      grid = Bongard::Grid.new(cells, 3)
+      find_all_results = grid.find_all { |c| c.value == 0 }.map { |c| c.value }
+      expect(find_all_results).to eq([])
+    end
+  end
+
+  describe '#count' do
+    it 'returns the number of cells that meet the block criteria' do
+      cells = [[1, 2, 3], [5, 5, 5], [7, 8, 9]]
+      grid = Bongard::Grid.new(cells, 3)
+      expect(grid.count { |c| c.value == 5 }).to eq(3)
+    end
+
+    it 'returns the number of cells that meet the block criteria' do
+      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      grid = Bongard::Grid.new(cells, 3)
+      expect(grid.count { |c| c.value == 5 }).to eq(1)
+    end
+  end
+
 end
