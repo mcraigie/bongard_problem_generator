@@ -1,0 +1,49 @@
+class BongardGrid
+  # include Enumerable
+
+  def initialize(cell_data, size); end
+
+  def height; end
+
+  def width; end
+
+  def size; end
+
+  def each(&block); end
+
+  def any?(&block); end
+
+  def all?(&block); end
+
+  def find(&block); end
+
+  def count(&block); end
+
+  def map(&block); end
+
+  def at_cell(col_id, row_id); end
+
+  def at_row(row_id); end
+
+  def at_col(col_id); end
+
+  def at_edges; end
+
+  def at_corners; end
+
+  def at_center; end
+
+  def match?(pattern_selector); end
+
+  def rotate; end
+
+  def mirror; end
+
+  def to_s; end
+
+  def to_json; end
+
+  def hash; end
+
+  def ==(); end
+end
