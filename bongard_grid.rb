@@ -1,7 +1,10 @@
 class BongardGrid
-  # include Enumerable
+  attr_reader :size
 
-  def initialize(cell_data, size); end
+  def initialize(cell_data, size)
+    @size = size
+    @cell_data = cell_data
+  end
 
   def size; end
 
