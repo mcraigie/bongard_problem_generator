@@ -178,20 +178,70 @@ describe Bongard::Grid do
       expect(@grid.cell_at(3,3).value).to eq(9)
     end
 
-    it 'returns nil if you specify a cell beyond the grid size' do
+    it 'returns nil if you specify a cell that does not exist' do
       expect(@grid.cell_at(0,0)).to eq(nil)
     end
 
-    it 'returns nil if you specify a cell beyond the grid size' do
+    it 'returns nil if you specify a cell that does not exist' do
       expect(@grid.cell_at(0,1)).to eq(nil)
     end
 
-    it 'returns nil if you specify a cell beyond the grid size' do
+    it 'returns nil if you specify a cell that does not exist' do
       expect(@grid.cell_at(4,0)).to eq(nil)
     end
 
-    it 'returns nil if you specify a cell beyond the grid size' do
+    it 'returns nil if you specify a cell that does not exist' do
       expect(@grid.cell_at(4,4)).to eq(nil)
+    end
+  end
+
+  describe '#cells_in_row' do
+    before(:all) do
+      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      @grid = Bongard::Grid.new(cells, 3)
+    end
+
+    it 'returns an array containing all the cells in the specified row' do
+      results = @grid.cells_in_row(1).map { |c| c.value }
+      expect(results).to eq([1, 2, 3])
+    end
+
+    it 'returns an array containing all the cells in the specified row' do
+      results = @grid.cells_in_row(3).map { |c| c.value }
+      expect(results).to eq([7, 8, 9])
+    end
+
+    it 'returns nil if you specify a row that does not exist' do
+      expect(@grid.cells_in_row(0)).to eq(nil)
+    end
+
+    it 'returns nil if you specify a row that does not exist' do
+      expect(@grid.cells_in_row(4)).to eq(nil)
+    end
+  end
+
+  describe '#cells_in_col' do
+    before(:all) do
+      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      @grid = Bongard::Grid.new(cells, 3)
+    end
+
+    it 'returns an array containing all the cells in the specified col' do
+      results = @grid.cells_in_col(1).map { |c| c.value }
+      expect(results).to eq([1, 4, 7])
+    end
+
+    it 'returns an array containing all the cells in the specified col' do
+      results = @grid.cells_in_col(3).map { |c| c.value }
+      expect(results).to eq([3, 6, 9])
+    end
+
+    it 'returns nil if you specify a col that does not exist' do
+      expect(@grid.cells_in_col(0)).to eq(nil)
+    end
+
+    it 'returns nil if you specify a col that does not exist' do
+      expect(@grid.cells_in_col(4)).to eq(nil)
     end
   end
 

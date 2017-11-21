@@ -69,11 +69,13 @@ module Bongard
 
     # 1-indexed
     def cells_in_row(row_id)
+      return nil unless row_id.between?(1, size)
       @rows[row_id - 1]
     end
 
     # 1-indexed
     def cells_in_col(col_id)
+      return nil unless col_id.between?(1, size)
       @cols[col_id - 1]
     end
 
