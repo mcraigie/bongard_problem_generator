@@ -245,4 +245,20 @@ describe Bongard::Grid do
     end
   end
 
+  describe '#edge_cells' do
+    it 'returns an array containing all the cells at the edge' do
+      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      grid = Bongard::Grid.new(cells, 3)
+      results = grid.edge_cells.map { |c| c.value }.sort
+      expect(results).to eq([1, 2, 3, 4, 6, 7, 8, 9])
+    end
+
+    it 'returns an array containing all the cells at the edge' do
+      cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+      grid = Bongard::Grid.new(cells, 4)
+      results = grid.edge_cells.map { |c| c.value }.sort
+      expect(results).to eq([1, 2, 3, 4, 5, 8, 9, 12, 13, 14, 15, 16])
+    end
+  end
+
 end
