@@ -3,10 +3,6 @@ class BongardGrid
 
   def initialize(cell_data, size); end
 
-  def height; end
-
-  def width; end
-
   def size; end
 
   def each(&block); end
@@ -46,4 +42,7 @@ class BongardGrid
   def hash; end
 
   def ==(); end
+
+  alias_method :height, :size
+  alias_method :width, :size
 end
