@@ -173,6 +173,7 @@ module Bongard
       return current_cell
     end
 
+    # TODO: refactor walk_row and walk_col into a single method
     def walk_col(starting_cell, col_diff)
       current_cell = starting_cell
       if col_diff > 0
@@ -221,8 +222,5 @@ module Bongard
     def hash; end
 
     def ==(); end
-
-    alias_method :height, :size
-    alias_method :width, :size
   end
 end

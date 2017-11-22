@@ -88,22 +88,6 @@ describe Bongard::Grid do
     end
   end
 
-  describe '#height' do
-    it 'is the same as the width' do
-      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-      grid = Bongard::Grid.new(cells, 3)
-      expect(grid.height).to eq(grid.size)
-    end
-  end
-
-  describe '#width' do
-    it 'is the same as the size' do
-      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-      grid = Bongard::Grid.new(cells, 3)
-      expect(grid.width).to eq(grid.size)
-    end
-  end
-
   describe '#any?' do
     before(:all) do
       cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
