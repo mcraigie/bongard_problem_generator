@@ -2,7 +2,6 @@ require './errors.rb'
 require './cell.rb'
 
 module Bongard
-
   # cell_data comes in like this:
   # [ [1,2,3],
   #   [4,5,6],
@@ -13,11 +12,8 @@ module Bongard
   # (1,1) (2,1) (3,1)
   # (1,2) (2,2) (3,2)
   # (1,3) (2,3) (3,3)
-
   class Grid
-    attr_reader :size
-    attr_reader :edge_cells
-    attr_reader :corner_cells
+    attr_reader :size, :edge_cells, :corner_cells
 
     def initialize(cell_data, size)
       @size = size
@@ -40,12 +36,12 @@ module Bongard
     def conforms_to_size?(cell_data)
       return false if cell_data.length != @size
       return false unless cell_data.all? { |row| row.length == @size }
-      return true
+      true
     end
 
     def contains_nil?(cell_data)
-      return true if cell_data.any? { |row| row.nil? || row.any? { |e| e.nil? } }
-      return false
+      return true if cell_data.any? { |row| row.nil? || row.any?(&:nil?) }
+      false
     end
 
     def prime_cell_neighbours
@@ -62,23 +58,23 @@ module Bongard
     end
 
     def each(&block)
-      @cells.each &block
+      @cells.each(&block)
     end
 
     def any?(&block)
-      @cells.any? &block
+      @cells.any?(&block)
     end
 
     def all?(&block)
-      @cells.all? &block
+      @cells.all?(&block)
     end
 
     def find_all(&block)
-      @cells.find_all &block
+      @cells.find_all(&block)
     end
 
     def count(&block)
-      @cells.count &block
+      @cells.count(&block)
     end
 
     # 1-indexed
@@ -103,15 +99,15 @@ module Bongard
       result = []
       result << cells_in_row(1) # top row
       result << cells_in_row(size) # bottom row
-      result << cells_in_col(1)[1..-2] # left column (minus corners)
-      result << cells_in_col(size)[1..-2] # right column (minus corners)
+      result << cells_in_col(1)[1..-2] # left column (sans corners)
+      result << cells_in_col(size)[1..-2] # right column (sans corners)
       result.flatten
     end
 
     def calculate_corner_cells
       result = []
-      result << cells_in_row(1).values_at(0,-1)
-      result << cells_in_row(size).values_at(0,-1)
+      result << cells_in_row(1).values_at(0, -1)
+      result << cells_in_row(size).values_at(0, -1)
       result.flatten
     end
 
@@ -127,7 +123,7 @@ module Bongard
       # currently check every cell
       # could make more efficient by analysing the pattern and ruling out
       # sections of the grid that couldn't possibly start a match
-      self.each do |starting_cell|
+      each do |starting_cell|
         current_cell = starting_cell
         pattern_found = true
 
@@ -144,7 +140,7 @@ module Bongard
         return true if pattern_found
       end
 
-      return false
+      false
     end
 
     def relative_cell(starting_cell, delta)
@@ -158,25 +154,20 @@ module Bongard
       current_cell = walk_horizontal(current_cell, horz_diff)
       current_cell = walk_vertical(current_cell, vert_diff)
 
-      return current_cell
+      current_cell
     end
 
     def walk_dir(starting_cell, diff, negative_dir, positive_dir)
       current_cell = starting_cell
 
-      if diff > 0
-        direction = positive_dir
-      elsif diff < 0
-        diff *= -1
-        direction = negative_dir
-      end
+      direction = diff > 0 ? positive_dir : negative_dir
 
-      diff.times do
+      diff.abs.times do
         current_cell = current_cell.__send__(direction)
         return nil if current_cell.nil?
       end
 
-      return current_cell
+      current_cell
     end
 
     def walk_horizontal(starting_cell, diff)
@@ -188,22 +179,21 @@ module Bongard
     end
 
     def convert_pattern(pattern)
-      steps = []
       raw_steps = pattern.split('>')
 
-      steps = raw_steps.map do |raw_step|
+      raw_steps.map do |raw_step|
         {
-          up:    extract_parameter(raw_step, 'U').to_i || 0, 
-          down:  extract_parameter(raw_step, 'D').to_i || 0, 
-          left:  extract_parameter(raw_step, 'L').to_i || 0, 
-          right: extract_parameter(raw_step, 'R').to_i || 0, 
+          up:    extract_parameter(raw_step, 'U').to_i || 0,
+          down:  extract_parameter(raw_step, 'D').to_i || 0,
+          left:  extract_parameter(raw_step, 'L').to_i || 0,
+          right: extract_parameter(raw_step, 'R').to_i || 0,
           test:  Regexp.new("^[#{extract_parameter(raw_step, '\?')}]$")
         }
       end
 
-      #raise error if any steps dont have a test
-      #raise error if any steps (apart from the 1st) dont have at least 1 delta
-      #raise error if 1st step has any deltas
+      # raise error if any steps dont have a test
+      # raise error if any steps (apart from the 1st) dont have at least 1 delta
+      # raise error if 1st step has any deltas
     end
 
     def extract_parameter(raw_step, prefix)

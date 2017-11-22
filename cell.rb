@@ -1,10 +1,7 @@
 module Bongard
   class Cell
     attr_reader :value
-    attr_accessor :up
-    attr_accessor :down
-    attr_accessor :left
-    attr_accessor :right
+    attr_accessor :up, :down, :left, :right
 
     def initialize(value)
       @value = value
