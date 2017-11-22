@@ -119,9 +119,7 @@ module Bongard
     def match?(pattern)
       steps = convert_pattern(pattern)
 
-      # currently check every cell
-      # could make more efficient by analysing the pattern and ruling out
-      # sections of the grid that couldn't possibly start a match
+      # TODO: make more efficient by ruling out impossible starting cells
       each do |starting_cell|
         current_cell = starting_cell
         pattern_found = true
@@ -177,6 +175,7 @@ module Bongard
       walk_dir(starting_cell, diff, :up, :down)
     end
 
+    # TODO: extract pattern conversion code into a new Pattern object
     def convert_pattern(pattern)
       pattern.split('>').map do |raw_step|
         {
@@ -188,9 +187,9 @@ module Bongard
         }
       end
 
-      # raise error if any steps dont have a test
-      # raise error if any steps (apart from the 1st) dont have at least 1 delta
-      # raise error if 1st step has any deltas
+      # TODO: raise error if any steps dont have a test
+      # TODO: raise error if any steps (apart from the 1st) dont have at least 1 delta
+      # TODO: raise error if 1st step has any deltas
     end
 
     def extract_parameter(raw_step, prefix)
