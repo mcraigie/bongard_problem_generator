@@ -51,11 +51,12 @@ module Bongard
     def prime_cell_neighbours
       (1..size).each do |col_id|
         (1..size).each do |row_id|
-          cell = cell_at(col_id, row_id)
-          cell.up = cell_at(col_id, row_id - 1)
-          cell.down = cell_at(col_id, row_id + 1)
-          cell.left = cell_at(col_id - 1, row_id)
-          cell.right = cell_at(col_id + 1, row_id)
+          current_cell = cell_at(col_id, row_id)
+
+          current_cell.up    = cell_at(col_id,     row_id - 1)
+          current_cell.down  = cell_at(col_id,     row_id + 1)
+          current_cell.left  = cell_at(col_id - 1, row_id)
+          current_cell.right = cell_at(col_id + 1, row_id)
         end
       end
     end
@@ -133,7 +134,7 @@ module Bongard
         steps.each do |step|
           current_cell = relative_cell(current_cell, step)
 
-          unless current_cell.match(step[:test])
+          unless current_cell && current_cell.match(step[:test])
             pattern_found = false
             break
           end
@@ -147,51 +148,46 @@ module Bongard
     end
 
     def relative_cell(starting_cell, delta)
-      current_cell = starting_cell
-      row_diff = delta[:left] - delta[:right]
-      col_diff = delta[:up] - delta[:down]
+      return nil unless starting_cell
 
-      current_cell = walk_row(starting_cell, row_diff)
-      current_cell = walk_col(starting_cell, col_diff)
+      current_cell = starting_cell
+
+      horz_diff = delta[:right] - delta[:left]
+      vert_diff = delta[:down] - delta[:up]
+
+      current_cell = walk_horizontal(starting_cell, horz_diff)
+      current_cell = walk_vertical(starting_cell, vert_diff)
 
       return current_cell
     end
 
-    def walk_row(starting_cell, row_diff)
+    def walk_dir(starting_cell, diff, negative_dir, positive_dir)
       current_cell = starting_cell
-      if row_diff > 0
-        direction = :left
-      elsif row_diff < 0
-        row_diff * -1
-        direction = :right
+
+      if diff > 0
+        direction = positive_dir
+      elsif diff < 0
+        diff *= -1
+        direction = negative_dir
       end
 
-      row_diff.times do
+      diff.times do
         current_cell = current_cell.__send__(direction)
+        return nil if current_cell.nil?
       end
 
       return current_cell
     end
 
-    # TODO: refactor walk_row and walk_col into a single method
-    def walk_col(starting_cell, col_diff)
-      current_cell = starting_cell
-      if col_diff > 0
-        direction = :up
-      elsif col_diff < 0
-        col_diff * -1
-        direction = :down
-      end
+    def walk_horizontal(starting_cell, diff)
+      walk_dir(starting_cell, diff, :left, :right)
+    end
 
-      col_diff.times do
-        current_cell = current_cell.__send__(direction)
-      end
-
-      return current_cell
+    def walk_vertical(starting_cell, diff)
+      walk_dir(starting_cell, diff, :up, :down)
     end
 
     def convert_pattern(pattern)
-      #raise error if the pattern is crap
       steps = []
       raw_steps = pattern.split('>')
 
@@ -204,10 +200,14 @@ module Bongard
           test:  Regexp.new("[#{extract_parameter(raw_step, '\?')}]")
         }
       end
+
+      #raise error if any steps dont have a test
+      #raise error if any steps (apart from the 1st) dont have at least 1 delta
+      #raise error if 1st step has any deltas
     end
 
     def extract_parameter(raw_step, prefix)
-      raw_step.scan(Regexp.new("#{prefix}.*[,\)]")).flatten.first
+      raw_step.scan(Regexp.new("#{prefix}(.*?)[,\)]")).flatten.first
     end
 
     def rotate(n); end
