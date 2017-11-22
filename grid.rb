@@ -1,6 +1,8 @@
 require './errors.rb'
 require './cell.rb'
 
+require 'digest'
+
 module Bongard
   # cell_data comes in like this:
   # [ [1,2,3],
@@ -183,7 +185,7 @@ module Bongard
           down:  extract_parameter(raw_step, 'D').to_i || 0,
           left:  extract_parameter(raw_step, 'L').to_i || 0,
           right: extract_parameter(raw_step, 'R').to_i || 0,
-          test:  Regexp.new("^[#{extract_parameter(raw_step, '\?')}]$")
+          test:  Regexp.new("^#{extract_parameter(raw_step, '\?')}$")
         }
       end
 
@@ -196,18 +198,37 @@ module Bongard
       raw_step.scan(Regexp.new("#{prefix}(.*?)[,\)]")).flatten.first
     end
 
-    def rotate(n); end
+    def rotate_clockwise()
+      Bongard::Grid.new(@cols.map(&:reverse), size)
+    end
 
     def mirror(axis); end
 
-    def to_s; end
+    def to_s
+      "Grid:[Size:#{size}, Cells:#{cells.join(',')}]"
+    end
 
-    def to_json; end
+    # TODO: replace this with something easier to read
+    def to_json
+      temp_rows = 
+      result = "{rows:["
+      result << @rows.map do |row|
+        "[#{row.map { |cell| cell.to_s }.join(',')}]"
+      end.join(',')
+      result << "]}"
+    end
 
-    def hash; end
+    def hash
+      Digest::MD5.hexdigest to_s
+    end
 
     def ==(other_grid)
-      @cells.map { |c| c.value } == other_grid.cells.map { |c| c.value }
+      # TODO: work out why rspec hangs indefinitely when I try to compare
+      # the arrays of cells directly. I don't want to have to compute to_s each
+      # time I try to compare grids.
+      # @cells.join(',') == other_grid.cells.join(',')
+
+      to_s == other_grid.to_s
     end
   end
 end

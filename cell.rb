@@ -8,11 +8,15 @@ module Bongard
     end
 
     def match(regex)
-      value.to_s.match(regex)
+      @value.to_s.match(regex)
     end
 
     def to_s
-      value.to_s
+      @value.to_s
+    end
+
+    def ==(other_cell)
+      @value == other_cell.value
     end
   end
 end

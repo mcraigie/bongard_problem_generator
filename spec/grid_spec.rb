@@ -331,10 +331,10 @@ describe Bongard::Grid do
     it 'converts the pattern into a chain of steps' do
       pattern = '(?1)>(R2,?3)>(D1,?7)>(L1,?6)'
       expected_steps = [
-        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^[1]$/},
-        {:up=>0, :down=>0, :left=>0, :right=>2, :test=>/^[3]$/},
-        {:up=>0, :down=>1, :left=>0, :right=>0, :test=>/^[7]$/},
-        {:up=>0, :down=>0, :left=>1, :right=>0, :test=>/^[6]$/}
+        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^1$/},
+        {:up=>0, :down=>0, :left=>0, :right=>2, :test=>/^3$/},
+        {:up=>0, :down=>1, :left=>0, :right=>0, :test=>/^7$/},
+        {:up=>0, :down=>0, :left=>1, :right=>0, :test=>/^6$/}
       ]
       expect(@grid.convert_pattern(pattern)).to eq(expected_steps)
     end
@@ -342,35 +342,35 @@ describe Bongard::Grid do
     it 'converts the pattern into a chain of steps' do
       pattern = '(?10)>(R20,?3)'
       expected_steps = [
-        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^[10]$/},
-        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/^[3]$/}
+        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^10$/},
+        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/^3$/}
       ]
       expect(@grid.convert_pattern(pattern)).to eq(expected_steps)
     end
 
     it 'handles a wildcard test' do
-      pattern = '(?.)>(R20,?3)'
+      pattern = '(?.+)>(R20,?3)'
       expected_steps = [
-        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^[.]$/},
-        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/^[3]$/}
+        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^.+$/},
+        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/^3$/}
       ]
       expect(@grid.convert_pattern(pattern)).to eq(expected_steps)
     end
 
     it 'handles a negated test' do
-      pattern = '(?^1)>(R20,?3)'
+      pattern = '(?[^1])>(R20,?3)'
       expected_steps = [
         {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^[^1]$/},
-        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/^[3]$/}
+        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/^3$/}
       ]
       expect(@grid.convert_pattern(pattern)).to eq(expected_steps)
     end
 
     it 'handles multiple deltas in a single step' do
-      pattern = '(?1)>(R1,D3,?.)'
+      pattern = '(?1)>(R1,D3,?.+)'
       expected_steps = [
-        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^[1]$/},
-        {:up=>0, :down=>3, :left=>0, :right=>1, :test=>/^[.]$/}
+        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^1$/},
+        {:up=>0, :down=>3, :left=>0, :right=>1, :test=>/^.+$/}
       ]
       expect(@grid.convert_pattern(pattern)).to eq(expected_steps)
     end
@@ -510,30 +510,65 @@ describe Bongard::Grid do
     before(:all) do
       @cells1 = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
       @cells2 = [[1, 5, 9, 13], [2, 6, 10, 14], [3, 7, 11, 15], [4, 8, 12, 16]]
+      @grid1 = Bongard::Grid.new(@cells1, 4)
     end
 
     it 'is true if the grids have the same values for all cells' do
-      grid1 = Bongard::Grid.new(@cells1, 4)
       grid2 = Bongard::Grid.new(@cells1, 4)
-      expect(grid1).to eq(grid2)
+      expect(@grid1).to eq(grid2)
     end
 
     it 'is false if the grids do not have the same values for all cells' do
-      grid1 = Bongard::Grid.new(@cells1, 4)
       grid2 = Bongard::Grid.new(@cells2, 4)
-      expect(grid1).not_to eq(grid2)
+      expect(@grid1).not_to eq(grid2)
     end
   end
 
-  # describe '#rotate' do
-  #   before(:all) do
-  #     cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
-  #     @grid = Bongard::Grid.new(cells, 4)
-  #   end
+  describe '#rotate_clockwise' do
+    before(:all) do
+      @cells1 = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+      @grid1 = Bongard::Grid.new(@cells1, 4)
 
-  #   it 'returns true if the pattern exists' do
-  #     expect(@grid.match?('(?1)>(R2,?3)>(D1,?7)>(L1,?6)')).to be true
-  #   end
-  # end
+      @cells2 = [[13, 9, 5, 1], [14, 10, 6, 2], [15, 11, 7, 3], [16, 12, 8, 4]]
+      @grid2 = Bongard::Grid.new(@cells2, 4)
+    end
+
+    it 'returns a copy of the grid rotated once clockwise' do
+      rotated_grid = @grid1.rotate_clockwise
+      expect(rotated_grid).to eq(@grid2)
+    end
+  end
+
+  describe '#to_json' do
+    it 'converts the grid object to JSON' do
+      cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+      grid = Bongard::Grid.new(cells, 4)
+      grid_as_json = '{rows:[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]}'
+      expect(grid.to_json).to eq(grid_as_json)
+    end
+  end
+
+  describe '#hash' do
+    it 'computes a hash' do
+      cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+      grid = Bongard::Grid.new(cells, 4)
+      grid_as_hash = '837654938b850c2cb386639d4e6818d1'
+      expect(grid.hash).to eq(grid_as_hash)
+    end
+
+    it 'computes the same hash each time' do
+      cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+      grid = Bongard::Grid.new(cells, 4)
+      grid_as_hash = '837654938b850c2cb386639d4e6818d1'
+      expect(grid.hash).to eq(grid.hash)
+    end
+
+    it 'computes a hash' do
+      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      grid = Bongard::Grid.new(cells, 3)
+      grid_as_hash = 'b021dda36064285d02a970b106df2ba5'
+      expect(grid.hash).to eq(grid_as_hash)
+    end
+  end
 
 end
