@@ -197,7 +197,7 @@ module Bongard
           down:  extract_parameter(raw_step, 'D').to_i || 0, 
           left:  extract_parameter(raw_step, 'L').to_i || 0, 
           right: extract_parameter(raw_step, 'R').to_i || 0, 
-          test:  Regexp.new("[#{extract_parameter(raw_step, '\?')}]")
+          test:  Regexp.new("^[#{extract_parameter(raw_step, '\?')}]$")
         }
       end
 

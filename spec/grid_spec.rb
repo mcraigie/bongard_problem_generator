@@ -331,10 +331,10 @@ describe Bongard::Grid do
     it 'converts the pattern into a chain of steps' do
       pattern = '(?1)>(R2,?3)>(D1,?7)>(L1,?6)'
       expected_steps = [
-        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/[1]/},
-        {:up=>0, :down=>0, :left=>0, :right=>2, :test=>/[3]/},
-        {:up=>0, :down=>1, :left=>0, :right=>0, :test=>/[7]/},
-        {:up=>0, :down=>0, :left=>1, :right=>0, :test=>/[6]/}
+        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^[1]$/},
+        {:up=>0, :down=>0, :left=>0, :right=>2, :test=>/^[3]$/},
+        {:up=>0, :down=>1, :left=>0, :right=>0, :test=>/^[7]$/},
+        {:up=>0, :down=>0, :left=>1, :right=>0, :test=>/^[6]$/}
       ]
       expect(@grid.convert_pattern(pattern)).to eq(expected_steps)
     end
@@ -342,8 +342,8 @@ describe Bongard::Grid do
     it 'converts the pattern into a chain of steps' do
       pattern = '(?10)>(R20,?3)'
       expected_steps = [
-        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/[10]/},
-        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/[3]/}
+        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^[10]$/},
+        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/^[3]$/}
       ]
       expect(@grid.convert_pattern(pattern)).to eq(expected_steps)
     end
@@ -351,8 +351,8 @@ describe Bongard::Grid do
     it 'handles a wildcard test' do
       pattern = '(?.)>(R20,?3)'
       expected_steps = [
-        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/[.]/},
-        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/[3]/}
+        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^[.]$/},
+        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/^[3]$/}
       ]
       expect(@grid.convert_pattern(pattern)).to eq(expected_steps)
     end
@@ -360,8 +360,8 @@ describe Bongard::Grid do
     it 'handles a negated test' do
       pattern = '(?^1)>(R20,?3)'
       expected_steps = [
-        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/[^1]/},
-        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/[3]/}
+        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^[^1]$/},
+        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/^[3]$/}
       ]
       expect(@grid.convert_pattern(pattern)).to eq(expected_steps)
     end
@@ -369,8 +369,8 @@ describe Bongard::Grid do
     it 'handles multiple deltas in a single step' do
       pattern = '(?1)>(R1,D3,?.)'
       expected_steps = [
-        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/[1]/},
-        {:up=>0, :down=>3, :left=>0, :right=>1, :test=>/[.]/}
+        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^[1]$/},
+        {:up=>0, :down=>3, :left=>0, :right=>1, :test=>/^[.]$/}
       ]
       expect(@grid.convert_pattern(pattern)).to eq(expected_steps)
     end
@@ -479,38 +479,31 @@ describe Bongard::Grid do
     end
   end
 
+  describe '#match?' do
+    before(:all) do
+      cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+      @grid = Bongard::Grid.new(cells, 4)
+    end
 
+    it 'returns true if the pattern exists' do
+      expect(@grid.match?('(?1)>(R2,?3)>(D1,?7)>(L1,?6)')).to eq(true)
+    end
 
-  # describe '#match?' do
-  #   before(:all) do
-  #     cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
-  #     @grid = Bongard::Grid.new(cells, 4)
-  #   end
+    it 'returns false if the pattern does not exist' do
+      expect(@grid.match?('(?1)>(R2,?1)')).to eq(false)
+    end
 
-  #   it 'returns true if the pattern exists' do
-  #     # pattern = '(?1)>(R2,?3)>(D1,?7)>(L1,?6)'
-  #     expect(@grid.match?('(?1)>(R2,?3)>(D1,?7)>(L1,?6)')).to eq(true)
-  #   end
+    it 'returns true if the pattern exists' do
+      expect(@grid.match?('(?2)>(R2,?4)')).to eq(true)
+    end
 
-  #   it 'returns false if the pattern does not exist' do
-  #     pattern = '(?1)>(R2,?1)'
-  #     expect(@grid.match?(pattern)).to eq(false)
-  #   end
+    it 'returns false if the pattern does not exist' do
+      expect(@grid.match?('(?2)>(R2,?0)')).to eq(false)
+    end
 
-  #   it 'returns true if the pattern exists' do
-  #     pattern = '(?2)>(R2,?4)'
-  #     expect(@grid.match?(pattern)).to eq(true)
-  #   end
-
-  #   it 'returns false if the pattern does not exist' do
-  #     pattern = '(?2)>(R2,?0)'
-  #     expect(@grid.match?(pattern)).to eq(false)
-  #   end
-
-  #   it 'returns true if the pattern exists' do
-  #     pattern = '(?2)>(D1,?6)'
-  #     expect(@grid.match?(pattern)).to eq(true)
-  #   end
-  # end
+    it 'returns true if the pattern exists' do
+      expect(@grid.match?('(?2)>(D1,?6)')).to eq(true)
+    end
+  end
 
 end
