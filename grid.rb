@@ -106,7 +106,9 @@ module Bongard
       cell_at(half_way, half_way)
     end
 
-    def match?(pattern_selector); end
+    def match?(pattern_selector)
+      
+    end
 
     def rotate(n); end
 

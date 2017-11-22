@@ -291,4 +291,36 @@ describe Bongard::Grid do
     end
   end
 
+  describe '#match?' do
+    before(:all) do
+      cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+      @grid = Bongard::Grid.new(cells, 4)
+    end
+
+    it 'returns true if the pattern exists' do
+      pattern = '(?1)>(R2,?3)>(D1,?7)>(L1,?6)'
+      expect(@grid.match?(pattern)).to eq(true)
+    end
+
+    it 'returns false if the pattern does not exist' do
+      pattern = '(?1)>(R2,?1)'
+      expect(@grid.match?(pattern)).to eq(false)
+    end
+
+    it 'returns true if the pattern exists' do
+      pattern = '(?2)>(R2,?4)'
+      expect(@grid.match?(pattern)).to eq(true)
+    end
+
+    it 'returns false if the pattern does not exist' do
+      pattern = '(?2)>(R2,?0)'
+      expect(@grid.match?(pattern)).to eq(false)
+    end
+
+    it 'returns true if the pattern exists' do
+      pattern = '(?2)>(D1,?6)'
+      expect(@grid.match?(pattern)).to eq(true)
+    end
+  end
+
 end
