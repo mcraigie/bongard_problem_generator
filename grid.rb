@@ -13,7 +13,7 @@ module Bongard
   # (1,2) (2,2) (3,2)
   # (1,3) (2,3) (3,3)
   class Grid
-    attr_reader :size, :edge_cells, :corner_cells
+    attr_reader :size, :edge_cells, :corner_cells, :cells
 
     def initialize(cell_data, size)
       @size = size
@@ -206,6 +206,8 @@ module Bongard
 
     def hash; end
 
-    def ==(); end
+    def ==(other_grid)
+      @cells.map { |c| c.value } == other_grid.cells.map { |c| c.value }
+    end
   end
 end

@@ -95,11 +95,11 @@ describe Bongard::Grid do
     end
 
     it 'returns true if any cell matches the block' do
-      expect(@grid.any? { |c| c.value == 5 }).to eq(true)
+      expect(@grid.any? { |c| c.value == 5 }).to be true
     end
 
     it 'returns false if no cell matches the block' do
-      expect(@grid.any? { |c| c.value == 0 }).to eq(false)
+      expect(@grid.any? { |c| c.value == 0 }).to be false
     end
   end
 
@@ -110,11 +110,11 @@ describe Bongard::Grid do
     end
 
     it 'returns true if all cells match the block' do
-      expect(@grid.all? { |c| c.value > 0 }).to eq(true)
+      expect(@grid.all? { |c| c.value > 0 }).to be true
     end
 
     it 'returns false if any cell does not match the block' do
-      expect(@grid.all? { |c| c.value != 2 }).to eq(false)
+      expect(@grid.all? { |c| c.value != 2 }).to be false
     end
   end
 
@@ -130,7 +130,7 @@ describe Bongard::Grid do
       cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
       grid = Bongard::Grid.new(cells, 3)
       find_all_results = grid.find_all { |c| c.value == 0 }.map { |c| c.value }
-      expect(find_all_results).to eq([])
+      expect(find_all_results).to be_empty
     end
   end
 
@@ -163,19 +163,19 @@ describe Bongard::Grid do
     end
 
     it 'returns nil if you specify a cell that does not exist' do
-      expect(@grid.cell_at(0,0)).to eq(nil)
+      expect(@grid.cell_at(0,0)).to be_nil
     end
 
     it 'returns nil if you specify a cell that does not exist' do
-      expect(@grid.cell_at(0,1)).to eq(nil)
+      expect(@grid.cell_at(0,1)).to be_nil
     end
 
     it 'returns nil if you specify a cell that does not exist' do
-      expect(@grid.cell_at(4,0)).to eq(nil)
+      expect(@grid.cell_at(4,0)).to be_nil
     end
 
     it 'returns nil if you specify a cell that does not exist' do
-      expect(@grid.cell_at(4,4)).to eq(nil)
+      expect(@grid.cell_at(4,4)).to be_nil
     end
   end
 
@@ -196,11 +196,11 @@ describe Bongard::Grid do
     end
 
     it 'returns nil if you specify a row that does not exist' do
-      expect(@grid.cells_in_row(0)).to eq(nil)
+      expect(@grid.cells_in_row(0)).to be_nil
     end
 
     it 'returns nil if you specify a row that does not exist' do
-      expect(@grid.cells_in_row(4)).to eq(nil)
+      expect(@grid.cells_in_row(4)).to be_nil
     end
   end
 
@@ -221,11 +221,11 @@ describe Bongard::Grid do
     end
 
     it 'returns nil if you specify a col that does not exist' do
-      expect(@grid.cells_in_col(0)).to eq(nil)
+      expect(@grid.cells_in_col(0)).to be_nil
     end
 
     it 'returns nil if you specify a col that does not exist' do
-      expect(@grid.cells_in_col(4)).to eq(nil)
+      expect(@grid.cells_in_col(4)).to be_nil
     end
   end
 
@@ -271,7 +271,7 @@ describe Bongard::Grid do
     it 'returns nil if the grid size is even' do
       cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
       grid = Bongard::Grid.new(cells, 4)
-      expect(grid.center_cell).to eq(nil)
+      expect(grid.center_cell).to be_nil
     end
   end
 
@@ -288,7 +288,7 @@ describe Bongard::Grid do
 
     it 'identifies that no UP delta was specified' do
       raw_step = "(D1,?1)"
-      expect(@grid.extract_parameter(raw_step, 'U')).to eq(nil)
+      expect(@grid.extract_parameter(raw_step, 'U')).to be_nil
     end
 
     it 'identifies the DOWN delta string' do
@@ -298,7 +298,7 @@ describe Bongard::Grid do
 
     it 'identifies that no DOWN delta was specified' do
       raw_step = "(L1,?1)"
-      expect(@grid.extract_parameter(raw_step, 'D')).to eq(nil)
+      expect(@grid.extract_parameter(raw_step, 'D')).to be_nil
     end
 
     it 'identifies the first matching DOWN delta and ignores the rest' do
@@ -433,49 +433,49 @@ describe Bongard::Grid do
     it 'walks off-grid on the left by 1' do
       starting_cell = @grid.cell_at(1, 1)
       destination = @grid.walk_horizontal(starting_cell, -1)
-      expect(destination).to eq(nil)
+      expect(destination).to be_nil
     end
 
     it 'walks off-grid on the right by 1' do
       starting_cell = @grid.cell_at(4, 2)
       destination = @grid.walk_horizontal(starting_cell, 1)
-      expect(destination).to eq(nil)
+      expect(destination).to be_nil
     end
 
     it 'walks off-grid from the top by 1' do
       starting_cell = @grid.cell_at(2, 1)
       destination = @grid.walk_vertical(starting_cell, -1)
-      expect(destination).to eq(nil)
+      expect(destination).to be_nil
     end
 
     it 'walks off-grid from the bottom by 1' do
       starting_cell = @grid.cell_at(2, 4)
       destination = @grid.walk_vertical(starting_cell, 1)
-      expect(destination).to eq(nil)
+      expect(destination).to be_nil
     end
 
     it 'walks off-grid on the left by 2' do
       starting_cell = @grid.cell_at(1, 1)
       destination = @grid.walk_horizontal(starting_cell, -2)
-      expect(destination).to eq(nil)
+      expect(destination).to be_nil
     end
 
     it 'walks off-grid on the right by 2' do
       starting_cell = @grid.cell_at(4, 1)
       destination = @grid.walk_horizontal(starting_cell, 2)
-      expect(destination).to eq(nil)
+      expect(destination).to be_nil
     end
 
     it 'walks off-grid from the top by 2' do
       starting_cell = @grid.cell_at(3, 1)
       destination = @grid.walk_vertical(starting_cell, -2)
-      expect(destination).to eq(nil)
+      expect(destination).to be_nil
     end
 
     it 'walks off-grid from the bottom by 2' do
       starting_cell = @grid.cell_at(4, 4)
       destination = @grid.walk_vertical(starting_cell, 2)
-      expect(destination).to eq(nil)
+      expect(destination).to be_nil
     end
   end
 
@@ -486,24 +486,54 @@ describe Bongard::Grid do
     end
 
     it 'returns true if the pattern exists' do
-      expect(@grid.match?('(?1)>(R2,?3)>(D1,?7)>(L1,?6)')).to eq(true)
+      expect(@grid.match?('(?1)>(R2,?3)>(D1,?7)>(L1,?6)')).to be true
     end
 
     it 'returns false if the pattern does not exist' do
-      expect(@grid.match?('(?1)>(R2,?1)')).to eq(false)
+      expect(@grid.match?('(?1)>(R2,?1)')).to be false
     end
 
     it 'returns true if the pattern exists' do
-      expect(@grid.match?('(?2)>(R2,?4)')).to eq(true)
+      expect(@grid.match?('(?2)>(R2,?4)')).to be true
     end
 
     it 'returns false if the pattern does not exist' do
-      expect(@grid.match?('(?2)>(R2,?0)')).to eq(false)
+      expect(@grid.match?('(?2)>(R2,?0)')).to be false
     end
 
     it 'returns true if the pattern exists' do
-      expect(@grid.match?('(?2)>(D1,?6)')).to eq(true)
+      expect(@grid.match?('(?2)>(D1,?6)')).to be true
     end
   end
+
+  describe '#==' do
+    before(:all) do
+      @cells1 = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+      @cells2 = [[1, 5, 9, 13], [2, 6, 10, 14], [3, 7, 11, 15], [4, 8, 12, 16]]
+    end
+
+    it 'is true if the grids have the same values for all cells' do
+      grid1 = Bongard::Grid.new(@cells1, 4)
+      grid2 = Bongard::Grid.new(@cells1, 4)
+      expect(grid1).to eq(grid2)
+    end
+
+    it 'is false if the grids do not have the same values for all cells' do
+      grid1 = Bongard::Grid.new(@cells1, 4)
+      grid2 = Bongard::Grid.new(@cells2, 4)
+      expect(grid1).not_to eq(grid2)
+    end
+  end
+
+  # describe '#rotate' do
+  #   before(:all) do
+  #     cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+  #     @grid = Bongard::Grid.new(cells, 4)
+  #   end
+
+  #   it 'returns true if the pattern exists' do
+  #     expect(@grid.match?('(?1)>(R2,?3)>(D1,?7)>(L1,?6)')).to be true
+  #   end
+  # end
 
 end
