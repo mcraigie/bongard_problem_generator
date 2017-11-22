@@ -105,8 +105,7 @@ module Bongard
     end
 
     def calculate_corner_cells
-      result = []
-      result << cells_in_row(1).values_at(0, -1)
+      result = cells_in_row(1).values_at(0, -1)
       result << cells_in_row(size).values_at(0, -1)
       result.flatten
     end
@@ -179,9 +178,7 @@ module Bongard
     end
 
     def convert_pattern(pattern)
-      raw_steps = pattern.split('>')
-
-      raw_steps.map do |raw_step|
+      pattern.split('>').map do |raw_step|
         {
           up:    extract_parameter(raw_step, 'U').to_i || 0,
           down:  extract_parameter(raw_step, 'D').to_i || 0,
