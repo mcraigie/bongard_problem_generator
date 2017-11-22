@@ -125,18 +125,18 @@ module Bongard
 
       # currently check every cell
       # could make more efficient by analysing the pattern and ruling out
-      # section of the grid that couldn't possibly start a match
+      # sections of the grid that couldn't possibly start a match
       self.each do |starting_cell|
         current_cell = starting_cell
         pattern_found = true
 
         steps.each do |step|
+          current_cell = relative_cell(current_cell, step)
+
           unless current_cell.match(step[:test])
             pattern_found = false
             break
           end
-
-          current_cell = relative_cell(current_cell, step)
         end
 
         # exit as soon as possible if the pattern is found
@@ -192,23 +192,22 @@ module Bongard
 
     def convert_pattern(pattern)
       #raise error if the pattern is crap
-      pattern.split('>')
-      [
+      steps = []
+      raw_steps = pattern.split('>')
+
+      steps = raw_steps.map do |raw_step|
         {
-          test: /[1]/,
-          left: 0,
-          right: 1,
-          up: 0,
-          down: 1
-        },
-        {
-          test: /[6]/,
-          left: 0,
-          right: 0,
-          up: 0,
-          down: 0
+          up:    extract_parameter(raw_step, 'U').to_i || 0, 
+          down:  extract_parameter(raw_step, 'D').to_i || 0, 
+          left:  extract_parameter(raw_step, 'L').to_i || 0, 
+          right: extract_parameter(raw_step, 'R').to_i || 0, 
+          test:  Regexp.new("[#{extract_parameter(raw_step, '\?')}]")
         }
-      ]
+      end
+    end
+
+    def extract_parameter(raw_step, prefix)
+      raw_step.scan(Regexp.new("#{prefix}.*[,\)]")).flatten.first
     end
 
     def rotate(n); end
