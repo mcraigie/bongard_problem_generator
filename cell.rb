@@ -13,5 +13,9 @@ module Bongard
     def match(regex)
       value.to_s.match(regex)
     end
+
+    def to_s
+      value.to_s
+    end
   end
 end

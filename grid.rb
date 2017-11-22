@@ -155,8 +155,8 @@ module Bongard
       horz_diff = delta[:right] - delta[:left]
       vert_diff = delta[:down] - delta[:up]
 
-      current_cell = walk_horizontal(starting_cell, horz_diff)
-      current_cell = walk_vertical(starting_cell, vert_diff)
+      current_cell = walk_horizontal(current_cell, horz_diff)
+      current_cell = walk_vertical(current_cell, vert_diff)
 
       return current_cell
     end
