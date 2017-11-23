@@ -1,5 +1,6 @@
 require './errors.rb'
 require './cell.rb'
+require './pattern.rb'
 
 require 'digest'
 
@@ -122,15 +123,15 @@ module Bongard
       cell_at(half_way, half_way)
     end
 
-    def match?(pattern)
-      steps = convert_pattern(pattern)
+    def match?(pattern_string)
+      pattern = Bongard::Pattern.new(pattern_string)
 
       # TODO: make more efficient by ruling out impossible starting cells
       each do |starting_cell|
         current_cell = starting_cell
         pattern_found = true
 
-        steps.each do |step|
+        pattern.steps.each do |step|
           current_cell = relative_cell(current_cell, step)
 
           unless current_cell && current_cell.match(step[:test])
@@ -182,28 +183,6 @@ module Bongard
       walk_dir(starting_cell, diff, :up, :down)
     end
 
-    # TODO: extract pattern conversion code into a new Pattern object
-    def convert_pattern(pattern)
-      pattern.split('>').map do |raw_step|
-        {
-          up:    extract_parameter(raw_step, 'U').to_i || 0,
-          down:  extract_parameter(raw_step, 'D').to_i || 0,
-          left:  extract_parameter(raw_step, 'L').to_i || 0,
-          right: extract_parameter(raw_step, 'R').to_i || 0,
-          test:  Regexp.new("^#{extract_parameter(raw_step, '\?')}$")
-        }
-      end
-
-      # TODO: raise error if any steps dont have a test
-      # TODO: raise error if any steps (apart from the 1st) dont have
-      # at least 1 delta
-      # TODO: raise error if 1st step has any deltas
-    end
-
-    def extract_parameter(raw_step, prefix)
-      raw_step.scan(Regexp.new("#{prefix}(.*?)[,\)]")).flatten.first
-    end
-
     # TODO: add testing/exceptions for arguments
     def rotate(direction = :clockwise, n = 1)
       cell_data = original_cell_data
@@ -213,8 +192,6 @@ module Bongard
           cell_data = cell_data.transpose.map(&:reverse)
         elsif direction == :anticlockwise
           cell_data = cell_data.map(&:reverse).transpose
-        else
-          # raise exception
         end
       end
 
