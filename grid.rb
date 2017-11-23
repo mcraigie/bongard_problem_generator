@@ -16,7 +16,7 @@ module Bongard
   # (1,2) (2,2) (3,2)
   # (1,3) (2,3) (3,3)
   class Grid
-    attr_reader :size, :edge_cells, :corner_cells, :original_cell_data
+    attr_reader :size, :original_cell_data
 
     def initialize(cell_data, size)
       @size = size
@@ -31,12 +31,6 @@ module Bongard
       @rows = cell_data.map { |row| row.map { |e| Cell.new(e) } }
       @cols = @rows.transpose
       @cells = @rows.flatten
-
-      # TODO: modify these to be calculated once when first required
-      @edge_cells = calculate_edge_cells
-      @corner_cells = calculate_corner_cells
-
-      @cells_primed = false
     end
 
     def conforms_to_size?(cell_data)
@@ -61,6 +55,7 @@ module Bongard
           current_cell.right = cell_at(col_id + 1, row_id)
         end
       end
+
       @cells_primed = true
     end
 
@@ -102,19 +97,22 @@ module Bongard
       @cols[col_id - 1]
     end
 
-    def calculate_edge_cells
-      result = []
-      result << cells_in_row(1) # top row
+    def edge_cells
+      return @edge_cells if @edge_cells
+
+      result =  cells_in_row(1) # top row
       result << cells_in_row(size) # bottom row
       result << cells_in_col(1)[1..-2] # left column (sans corners)
       result << cells_in_col(size)[1..-2] # right column (sans corners)
-      result.flatten
+      @edge_cells = result.flatten
     end
 
-    def calculate_corner_cells
+    def corner_cells
+      return @corner_cells if @corner_cells
+
       result = cells_in_row(1).values_at(0, -1)
       result << cells_in_row(size).values_at(0, -1)
-      result.flatten
+      @corner_cells = result.flatten
     end
 
     def center_cell

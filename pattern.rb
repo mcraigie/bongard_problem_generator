@@ -1,3 +1,5 @@
+require './errors.rb'
+
 module Bongard
   class Pattern
     attr_reader :steps
