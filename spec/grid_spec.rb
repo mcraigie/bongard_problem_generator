@@ -585,6 +585,11 @@ describe Bongard::Grid do
       rotated_grid = @grid1.rotate(:anticlockwise, 1)
       expect(rotated_grid).to eq(@grid4)
     end
+
+    it 'returns a copy of the grid rotated twice anticlockwise' do
+      rotated_grid = @grid1.rotate(:anticlockwise, 1)
+      expect(rotated_grid).to eq(@grid3)
+    end
   end
 
 end

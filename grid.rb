@@ -139,7 +139,6 @@ module Bongard
           end
         end
 
-        # exit as soon as possible if the pattern is found
         return true if pattern_found
       end
 
