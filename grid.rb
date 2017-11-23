@@ -204,10 +204,6 @@ module Bongard
       raw_step.scan(Regexp.new("#{prefix}(.*?)[,\)]")).flatten.first
     end
 
-    # TODO: make it work for more than one rotation
-    # work out why initialize takes an array of cell objects and
-    # doesn't complain.
-    # create a version that goes anticlockwise
     def rotate(direction = :clockwise, n = 1)
       new_grid = nil
 
@@ -226,14 +222,8 @@ module Bongard
     # :horizontal or :vertical
     def mirror(axis); end
 
-    # TODO: replace this with something easier to read
     def to_json
-      temp_rows = 
-      result = "{rows:["
-      result << @rows.map do |row|
-        "[#{row.map { |cell| cell.value }.join(',')}]"
-      end.join(',')
-      result << "]}"
+      "{rows:#{original_cell_data}}".gsub(/\s/,'')
     end
 
     def hash
