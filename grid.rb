@@ -196,7 +196,8 @@ module Bongard
       end
 
       # TODO: raise error if any steps dont have a test
-      # TODO: raise error if any steps (apart from the 1st) dont have at least 1 delta
+      # TODO: raise error if any steps (apart from the 1st) dont have
+      # at least 1 delta
       # TODO: raise error if 1st step has any deltas
     end
 
@@ -205,17 +206,19 @@ module Bongard
     end
 
     def rotate(direction = :clockwise, n = 1)
-      new_grid = nil
+      grid = nil
 
       n.times do
         if direction == :clockwise
-          new_grid = Bongard::Grid.new(@original_cell_data.transpose.map(&:reverse), size)
+          cell_data = @original_cell_data.transpose.map(&:reverse)
         elsif direction == :anticlockwise
-          new_grid = Bongard::Grid.new(@original_cell_data.transpose, size)
+          cell_data = @original_cell_data.reverse.transpose
         end
+
+        grid = Bongard::Grid.new(cell_data, size)
       end
 
-      new_grid
+      grid
     end
 
     # depending on the axis, create a new grid with the rows or columns reversed
