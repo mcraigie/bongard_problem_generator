@@ -10,11 +10,11 @@ module Bongard
   #   [4,5,6],
   #   [7,8,9] ]
 
-  # cells at 1-indexed and the origin is top left
-  # e.g.
-  # (1,1) (2,1) (3,1)
-  # (1,2) (2,2) (3,2)
-  # (1,3) (2,3) (3,3)
+  # cells are 1-indexed and the origin is top left:
+  # (1,1) (2,1) (3,1)...
+  # (1,2) (2,2) (3,2)...
+  # (1,3) (2,3) (3,3)...
+  #  ...   ...   ...
   class Grid
     attr_reader :size, :original_cell_data
 
@@ -99,7 +99,6 @@ module Bongard
 
     def edge_cells
       return @edge_cells if @edge_cells
-
       result =  cells_in_row(1) # top row
       result << cells_in_row(size) # bottom row
       result << cells_in_col(1)[1..-2] # left column (sans corners)
@@ -109,7 +108,6 @@ module Bongard
 
     def corner_cells
       return @corner_cells if @corner_cells
-
       result = cells_in_row(1).values_at(0, -1)
       result << cells_in_row(size).values_at(0, -1)
       @corner_cells = result.flatten
