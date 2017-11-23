@@ -15,10 +15,11 @@ module Bongard
   # (1,2) (2,2) (3,2)
   # (1,3) (2,3) (3,3)
   class Grid
-    attr_reader :size, :edge_cells, :corner_cells, :cells
+    attr_reader :size, :edge_cells, :corner_cells, :cells, :original_cell_data
 
     def initialize(cell_data, size)
       @size = size
+      @original_cell_data = cell_data
 
       raise CellDataNilError if contains_nil?(cell_data)
       raise CellDataSizeError unless conforms_to_size?(cell_data)
@@ -29,10 +30,12 @@ module Bongard
       @rows = cell_data.map { |row| row.map { |e| Cell.new(e) } }
       @cols = @rows.transpose
       @cells = @rows.flatten
+
+      # TODO: modify these to be calculated once when first required
       @edge_cells = calculate_edge_cells
       @corner_cells = calculate_corner_cells
-
-      prime_cell_neighbours
+      # prime_cell_neighbours
+      @cells_primed = false
     end
 
     def conforms_to_size?(cell_data)
@@ -57,6 +60,7 @@ module Bongard
           current_cell.right = cell_at(col_id + 1, row_id)
         end
       end
+      @cells_primed = true
     end
 
     def each(&block)
@@ -157,6 +161,8 @@ module Bongard
     end
 
     def walk_dir(starting_cell, diff, negative_dir, positive_dir)
+      prime_cell_neighbours unless @cells_primed
+
       current_cell = starting_cell
 
       direction = diff > 0 ? positive_dir : negative_dir
@@ -198,37 +204,52 @@ module Bongard
       raw_step.scan(Regexp.new("#{prefix}(.*?)[,\)]")).flatten.first
     end
 
-    def rotate_clockwise()
-      Bongard::Grid.new(@cols.map(&:reverse), size)
+    # TODO: make it work for more than one rotation
+    # work out why initialize takes an array of cell objects and
+    # doesn't complain.
+    # create a version that goes anticlockwise
+    def rotate(direction = :clockwise, n = 1)
+      new_grid = nil
+
+      n.times do
+        if direction == :clockwise
+          new_grid = Bongard::Grid.new(@original_cell_data.transpose.map(&:reverse), size)
+        elsif direction == :anticlockwise
+          new_grid = Bongard::Grid.new(@original_cell_data.transpose, size)
+        end
+          
+      end
+      new_grid
     end
 
+    # depending on the axis, create a new grid with the rows or columns reversed
+    # :horizontal or :vertical
     def mirror(axis); end
-
-    def to_s
-      "Grid:[Size:#{size}, Cells:#{cells.join(',')}]"
-    end
 
     # TODO: replace this with something easier to read
     def to_json
       temp_rows = 
       result = "{rows:["
       result << @rows.map do |row|
-        "[#{row.map { |cell| cell.to_s }.join(',')}]"
+        "[#{row.map { |cell| cell.value }.join(',')}]"
       end.join(',')
       result << "]}"
     end
 
     def hash
-      Digest::MD5.hexdigest to_s
+      Digest::MD5.hexdigest @original_cell_data.join(',')
+    end
+
+    def to_s
+      "(Size:#{size}, Cells:[#{original_cell_data.join(',')}])"
+    end
+
+    def inspect
+      @original_cell_data.inspect
     end
 
     def ==(other_grid)
-      # TODO: work out why rspec hangs indefinitely when I try to compare
-      # the arrays of cells directly. I don't want to have to compute to_s each
-      # time I try to compare grids.
-      # @cells.join(',') == other_grid.cells.join(',')
-
-      to_s == other_grid.to_s
+      @original_cell_data == other_grid.original_cell_data
     end
   end
 end

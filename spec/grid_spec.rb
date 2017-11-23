@@ -509,33 +509,18 @@ describe Bongard::Grid do
   describe '#==' do
     before(:all) do
       @cells1 = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
-      @cells2 = [[1, 5, 9, 13], [2, 6, 10, 14], [3, 7, 11, 15], [4, 8, 12, 16]]
       @grid1 = Bongard::Grid.new(@cells1, 4)
     end
 
     it 'is true if the grids have the same values for all cells' do
-      grid2 = Bongard::Grid.new(@cells1, 4)
-      expect(@grid1).to eq(grid2)
+      same_grid = Bongard::Grid.new(@cells1, 4)
+      expect(@grid1).to eq(same_grid)
     end
 
     it 'is false if the grids do not have the same values for all cells' do
-      grid2 = Bongard::Grid.new(@cells2, 4)
-      expect(@grid1).not_to eq(grid2)
-    end
-  end
-
-  describe '#rotate_clockwise' do
-    before(:all) do
-      @cells1 = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
-      @grid1 = Bongard::Grid.new(@cells1, 4)
-
-      @cells2 = [[13, 9, 5, 1], [14, 10, 6, 2], [15, 11, 7, 3], [16, 12, 8, 4]]
-      @grid2 = Bongard::Grid.new(@cells2, 4)
-    end
-
-    it 'returns a copy of the grid rotated once clockwise' do
-      rotated_grid = @grid1.rotate_clockwise
-      expect(rotated_grid).to eq(@grid2)
+      cells2 = [[1, 5, 9, 13], [2, 6, 10, 14], [3, 7, 11, 15], [4, 8, 12, 16]]
+      different_grid = Bongard::Grid.new(cells2, 4)
+      expect(@grid1).not_to eq(different_grid)
     end
   end
 
@@ -552,22 +537,53 @@ describe Bongard::Grid do
     it 'computes a hash' do
       cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
       grid = Bongard::Grid.new(cells, 4)
-      grid_as_hash = '837654938b850c2cb386639d4e6818d1'
+      grid_as_hash = '997dec9644e30e45fb1b06a5a58531a1'
       expect(grid.hash).to eq(grid_as_hash)
     end
 
     it 'computes the same hash each time' do
       cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
       grid = Bongard::Grid.new(cells, 4)
-      grid_as_hash = '837654938b850c2cb386639d4e6818d1'
+      grid_as_hash = '997dec9644e30e45fb1b06a5a58531a1'
       expect(grid.hash).to eq(grid.hash)
     end
 
     it 'computes a hash' do
       cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
       grid = Bongard::Grid.new(cells, 3)
-      grid_as_hash = 'b021dda36064285d02a970b106df2ba5'
+      grid_as_hash = '4465827426a5fff877ca7c2b8cc1aab5'
       expect(grid.hash).to eq(grid_as_hash)
+    end
+  end
+
+  describe '#rotate' do
+    before(:all) do
+      @cells1 = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+      @grid1 = Bongard::Grid.new(@cells1, 4)
+
+      @cells2 = [[13, 9, 5, 1], [14, 10, 6, 2], [15, 11, 7, 3], [16, 12, 8, 4]]
+      @grid2 = Bongard::Grid.new(@cells2, 4)
+
+      @cells3 = [[16, 15, 14, 13], [12, 11, 10, 9], [8, 7, 6, 5], [4, 3, 2, 1]]
+      @grid3 = Bongard::Grid.new(@cells2, 4)
+
+      @cells4 = [[4, 8, 12, 16], [3, 7, 11, 15], [2, 6, 10, 14], [1, 5, 9, 13]]
+      @grid4 = Bongard::Grid.new(@cells2, 4)
+    end
+
+    it 'returns a copy of the grid rotated once clockwise' do
+      rotated_grid = @grid1.rotate(:clockwise, 1)
+      expect(rotated_grid).to eq(@grid2)
+    end
+
+    it 'returns a copy of the grid rotated twice clockwise' do
+      rotated_grid = @grid1.rotate(:clockwise, 2)
+      expect(rotated_grid).to eq(@grid3)
+    end
+
+    it 'returns a copy of the grid rotated once anticlockwise' do
+      rotated_grid = @grid1.rotate(:anticlockwise, 1)
+      expect(rotated_grid).to eq(@grid4)
     end
   end
 

@@ -16,7 +16,7 @@ module Bongard
     end
 
     def ==(other_cell)
-      @value == other_cell.value
+      other_cell.class == this.class && @value == other_cell.value
     end
   end
 end
