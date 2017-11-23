@@ -204,6 +204,7 @@ module Bongard
       raw_step.scan(Regexp.new("#{prefix}(.*?)[,\)]")).flatten.first
     end
 
+    # TODO: add testing/exceptions for arguments
     def rotate(direction = :clockwise, n = 1)
       cell_data = original_cell_data
 
@@ -220,8 +221,7 @@ module Bongard
       Bongard::Grid.new(cell_data, size)
     end
 
-    # depending on the axis, create a new grid with the rows or columns reversed
-    # :horizontal or :vertical
+    # TODO: add testing/exceptions for arguments
     def mirror(axis)
       if axis == :vertical
         cell_data = original_cell_data.reverse
