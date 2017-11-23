@@ -565,10 +565,10 @@ describe Bongard::Grid do
       @grid2 = Bongard::Grid.new(@cells2, 4)
 
       @cells3 = [[16, 15, 14, 13], [12, 11, 10, 9], [8, 7, 6, 5], [4, 3, 2, 1]]
-      @grid3 = Bongard::Grid.new(@cells2, 4)
+      @grid3 = Bongard::Grid.new(@cells3, 4)
 
       @cells4 = [[4, 8, 12, 16], [3, 7, 11, 15], [2, 6, 10, 14], [1, 5, 9, 13]]
-      @grid4 = Bongard::Grid.new(@cells2, 4)
+      @grid4 = Bongard::Grid.new(@cells4, 4)
     end
 
     it 'returns a copy of the grid rotated once clockwise' do
@@ -587,7 +587,7 @@ describe Bongard::Grid do
     end
 
     it 'returns a copy of the grid rotated twice anticlockwise' do
-      rotated_grid = @grid1.rotate(:anticlockwise, 1)
+      rotated_grid = @grid1.rotate(:anticlockwise, 2)
       expect(rotated_grid).to eq(@grid3)
     end
   end

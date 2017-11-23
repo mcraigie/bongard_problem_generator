@@ -205,19 +205,17 @@ module Bongard
     end
 
     def rotate(direction = :clockwise, n = 1)
-      grid = nil
+      cell_data = original_cell_data
 
       n.times do
         if direction == :clockwise
-          cell_data = @original_cell_data.transpose.map(&:reverse)
+          cell_data = cell_data.transpose.map(&:reverse)
         elsif direction == :anticlockwise
-          cell_data = @original_cell_data.reverse.transpose
+          cell_data = cell_data.map(&:reverse).transpose
         end
-
-        grid = Bongard::Grid.new(cell_data, size)
       end
 
-      grid
+      Bongard::Grid.new(cell_data, size)
     end
 
     # depending on the axis, create a new grid with the rows or columns reversed
