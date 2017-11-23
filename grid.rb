@@ -15,7 +15,7 @@ module Bongard
   # (1,2) (2,2) (3,2)
   # (1,3) (2,3) (3,3)
   class Grid
-    attr_reader :size, :edge_cells, :corner_cells, :cells, :original_cell_data
+    attr_reader :size, :edge_cells, :corner_cells, :original_cell_data
 
     def initialize(cell_data, size)
       @size = size
@@ -34,7 +34,7 @@ module Bongard
       # TODO: modify these to be calculated once when first required
       @edge_cells = calculate_edge_cells
       @corner_cells = calculate_corner_cells
-      # prime_cell_neighbours
+
       @cells_primed = false
     end
 
@@ -213,8 +213,8 @@ module Bongard
         elsif direction == :anticlockwise
           new_grid = Bongard::Grid.new(@original_cell_data.transpose, size)
         end
-          
       end
+
       new_grid
     end
 
@@ -223,7 +223,7 @@ module Bongard
     def mirror(axis); end
 
     def to_json
-      "{rows:#{original_cell_data}}".gsub(/\s/,'')
+      "{rows:#{original_cell_data}}".gsub(/\s/, '')
     end
 
     def hash
@@ -238,8 +238,8 @@ module Bongard
       @original_cell_data.inspect
     end
 
-    def ==(other_grid)
-      @original_cell_data == other_grid.original_cell_data
+    def ==(other)
+      @original_cell_data == other.original_cell_data
     end
   end
 end
