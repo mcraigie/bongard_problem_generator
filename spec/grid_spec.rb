@@ -557,68 +557,70 @@ describe Bongard::Grid do
   describe '#rotate' do
     before(:all) do
       cells1 = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
-      @grid1 = Bongard::Grid.new(cells1, 4)
+      @starting_grid = Bongard::Grid.new(cells1, 4)
 
       cells2 = [[13, 9, 5, 1], [14, 10, 6, 2], [15, 11, 7, 3], [16, 12, 8, 4]]
-      @grid2 = Bongard::Grid.new(cells2, 4)
+      @rotated_right_1 = Bongard::Grid.new(cells2, 4)
 
       cells3 = [[16, 15, 14, 13], [12, 11, 10, 9], [8, 7, 6, 5], [4, 3, 2, 1]]
-      @grid3 = Bongard::Grid.new(cells3, 4)
+      @rotated_right_2 = Bongard::Grid.new(cells3, 4)
 
       cells4 = [[4, 8, 12, 16], [3, 7, 11, 15], [2, 6, 10, 14], [1, 5, 9, 13]]
-      @grid4 = Bongard::Grid.new(cells4, 4)
+      @rotated_right_3 = Bongard::Grid.new(cells4, 4)
     end
 
     it 'returns a copy of the grid rotated once clockwise' do
-      expect(@grid1.rotate(:clockwise, 1)).to eq(@grid2)
+      expect(@starting_grid.rotate(:clockwise, 1)).to eq(@rotated_right_1)
     end
 
     it 'returns a copy of the grid rotated twice clockwise' do
-      expect(@grid1.rotate(:clockwise, 2)).to eq(@grid3)
+      expect(@starting_grid.rotate(:clockwise, 2)).to eq(@rotated_right_2)
     end
 
     it 'returns a copy of the grid rotated once anticlockwise' do
-      expect(@grid1.rotate(:anticlockwise, 1)).to eq(@grid4)
+      expect(@starting_grid.rotate(:anticlockwise, 1)).to eq(@rotated_right_3)
     end
 
     it 'returns a copy of the grid rotated twice anticlockwise' do
-      expect(@grid1.rotate(:anticlockwise, 2)).to eq(@grid3)
+      expect(@starting_grid.rotate(:anticlockwise, 2)).to eq(@rotated_right_2)
     end
   end
 
   describe '#mirror' do
     before(:all) do
-      cells_1a = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
-      @grid_1a = Bongard::Grid.new(cells_1a, 4)
+      cells_1a = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      @grid_1a = Bongard::Grid.new(cells_1a, 3)
 
-      cells_1b = [[13, 9, 5, 1], [14, 10, 6, 2], [15, 11, 7, 3], [16, 12, 8, 4]]
-      @grid_1b = Bongard::Grid.new(cells_1b, 4)
+      cells_1b = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      @grid_1b = Bongard::Grid.new(cells_1b, 3)
 
-      cells_2a = [[16, 15, 14, 13], [12, 11, 10, 9], [8, 7, 6, 5], [4, 3, 2, 1]]
+      cells_1c = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      @grid_1c = Bongard::Grid.new(cells_1c, 3)
+
+      cells_2a = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
       @grid_2a = Bongard::Grid.new(cells_2a, 4)
 
-      cells_2b = [[4, 8, 12, 16], [3, 7, 11, 15], [2, 6, 10, 14], [1, 5, 9, 13]]
+      cells_2b = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
       @grid_2b = Bongard::Grid.new(cells_2b, 4)
+
+      cells_2c = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+      @grid_2c = Bongard::Grid.new(cells_2c, 4)
     end
 
     it 'returns a copy of the grid mirrored vertically' do
-      mirrored_grid = @grid_1a.mirror(:vertical)
-      expect(mirrored_grid).to eq(@grid_1a)
+      expect(@grid_1a.mirror(:vertical)).to eq(@grid_1b)
+    end
+
+    it 'returns a copy of the grid mirrored horizontaly' do
+      expect(@grid_1a.mirror(:horizontal)).to eq(@grid_1c)
     end
 
     it 'returns a copy of the grid mirrored vertically' do
-      mirrored_grid = @grid_1a.mirror(:vertical)
-      expect(mirrored_grid).to eq(@grid_1a)
+      expect(@grid_2a.mirror(:vertical)).to eq(@grid_2b)
     end
 
     it 'returns a copy of the grid mirrored horizontaly' do
-      mirrored_grid = @grid_1a.mirror(:horizontal)
-      expect(mirrored_grid).to eq(@grid_1a)
-    end
-
-    it 'returns a copy of the grid mirrored horizontaly' do
-      mirrored_grid = @grid_1a.mirror(:horizontal)
-      expect(mirrored_grid).to eq(@grid_1a)
+      expect(@grid_2a.mirror(:horizontal)).to eq(@grid_2c)
     end
   end
 

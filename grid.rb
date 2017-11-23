@@ -220,7 +220,8 @@ module Bongard
 
     # depending on the axis, create a new grid with the rows or columns reversed
     # :horizontal or :vertical
-    def mirror(axis); end
+    def mirror(axis)
+    end
 
     def to_json
       "{rows:#{original_cell_data}}".gsub(/\s/, '')
