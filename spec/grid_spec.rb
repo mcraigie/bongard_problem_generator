@@ -591,19 +591,19 @@ describe Bongard::Grid do
       cells_1a = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
       @grid_1a = Bongard::Grid.new(cells_1a, 3)
 
-      cells_1b = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      cells_1b = [[7, 8, 9], [4, 5, 6], [1, 2, 3]]
       @grid_1b = Bongard::Grid.new(cells_1b, 3)
 
-      cells_1c = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      cells_1c = [[3, 2, 1], [6, 5, 4], [9, 8, 7]]
       @grid_1c = Bongard::Grid.new(cells_1c, 3)
 
       cells_2a = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
       @grid_2a = Bongard::Grid.new(cells_2a, 4)
 
-      cells_2b = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+      cells_2b = [[13, 14, 15, 16], [9, 10, 11, 12], [5, 6, 7, 8], [1, 2, 3, 4]]
       @grid_2b = Bongard::Grid.new(cells_2b, 4)
 
-      cells_2c = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+      cells_2c = [[4, 3, 2, 1], [8, 7, 6, 5], [12, 11, 10, 9], [16, 15, 14, 13]]
       @grid_2c = Bongard::Grid.new(cells_2c, 4)
     end
 

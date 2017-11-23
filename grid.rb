@@ -212,6 +212,8 @@ module Bongard
           cell_data = cell_data.transpose.map(&:reverse)
         elsif direction == :anticlockwise
           cell_data = cell_data.map(&:reverse).transpose
+        else
+          # raise exception
         end
       end
 
@@ -221,6 +223,13 @@ module Bongard
     # depending on the axis, create a new grid with the rows or columns reversed
     # :horizontal or :vertical
     def mirror(axis)
+      if axis == :vertical
+        cell_data = original_cell_data.reverse
+      elsif axis == :horizontal
+        cell_data = original_cell_data.transpose.reverse.transpose
+      end
+
+      Bongard::Grid.new(cell_data, size)
     end
 
     def to_json
