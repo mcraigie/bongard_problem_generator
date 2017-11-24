@@ -20,7 +20,7 @@ require './errors.rb'
 
 # Movement parameters are composed of a direction prefix and a distance value
 # <direction><distance>
-# The <direction> prefix is one of U, D, L, R
+# The <direction> prefix is one of U, D, L, R (up, down, left, right)
 # The <distance> value is how many cells to travel in that direction
 
 # Test parameters are composed of the prefix "?" and a test value
@@ -71,7 +71,7 @@ module Bongard
     # Returns nil if the parameter is not present
     # Params:
     # +raw_step+:: the step as a string
-    # +prefix+:: the prefix of the parameter value to be extracted
+    # +prefix+::   the prefix of the parameter value to be extracted
     def self.extract_parameter(raw_step, prefix)
       raw_step.scan(Regexp.new("#{prefix}(.*?)[,\)]")).flatten.first
     end
