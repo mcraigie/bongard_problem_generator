@@ -32,7 +32,7 @@ require './errors.rb'
 # <test> examples:
 # match a specific value: ?1, ?42
 # match anything but a specific single digit value: ?[^1]
-# match anything but a specific multiple digit value: (?!.*42).*, (?!.*123).* 
+# match anything but a specific multiple digit value: (?!.*42).*, (?!.*123).*
 # match any value: ?.+ (not sure how useful this is)
 
 # The first step in a pattern must only contain a test parameter
