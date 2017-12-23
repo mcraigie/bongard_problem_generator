@@ -22,5 +22,9 @@ module Bongard
     def ==(other)
       other.class == this.class && @value == other.value
     end
+
+    def is(other)
+      @value == other
+    end
   end
 end

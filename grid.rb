@@ -27,7 +27,7 @@ module Bongard
       @original_cell_data = cell_data
 
       raise CellDataNilError if contains_nil?(cell_data)
-      raise CellDataSizeError unless conforms_to_size?(cell_data)
+      raise CellDataShapeError unless conforms_to_size?(cell_data)
       raise BelowMinimumSizeError unless @size >= 3
 
       # intentionally trading memory for convenience and increased

@@ -9,22 +9,22 @@ describe Bongard::Grid do
   describe '#initialize' do
     it 'fails if the cell data does not match the size' do
       cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-      expect { Bongard::Grid.new(cells, 4) }.to raise_error CellDataSizeError
+      expect { Bongard::Grid.new(cells, 4) }.to raise_error CellDataShapeError
     end
 
     it 'fails if the cell data is incomplete' do
       cells = [[1, 2, 3], [4, 5, 6], [7, 8]]
-      expect { Bongard::Grid.new(cells, 3) }.to raise_error CellDataSizeError
+      expect { Bongard::Grid.new(cells, 3) }.to raise_error CellDataShapeError
     end
 
     it 'fails if the cell data is incomplete' do
       cells = [[1, 2], [4, 5], [7, 8]]
-      expect { Bongard::Grid.new(cells, 3) }.to raise_error CellDataSizeError
+      expect { Bongard::Grid.new(cells, 3) }.to raise_error CellDataShapeError
     end
 
     it 'fails if the cell data is incomplete' do
       cells = [[1, 2, 3], [4, 5, 6]]
-      expect { Bongard::Grid.new(cells, 3) }.to raise_error CellDataSizeError
+      expect { Bongard::Grid.new(cells, 3) }.to raise_error CellDataShapeError
     end
 
     it 'fails if the cell data contains nil' do
