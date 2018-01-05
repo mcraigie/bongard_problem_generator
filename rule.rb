@@ -7,9 +7,11 @@ require './grid.rb'
 
 module Bongard
   class Rule
-    def initialize(&block)
+    attr_reader :description
+    def initialize(description, &block)
       raise RuleError unless block_given?
       @rule_proc = block
+      @description = description
     end
 
     def follower?(grid)
