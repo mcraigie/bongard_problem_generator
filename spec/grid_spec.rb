@@ -427,35 +427,14 @@ describe Bongard::Grid do
     end
   end
 
-  describe '#to_json' do
-    it 'converts the grid object to JSON' do
-      cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
-      grid = Bongard::Grid.new(cells, 4)
-      grid_as_json = '{rows:[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]}'
-      expect(grid.to_json).to eq(grid_as_json)
-    end
-  end
-
-  describe '#hash' do
-    it 'computes a hash' do
-      cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
-      grid = Bongard::Grid.new(cells, 4)
-      grid_as_hash = 
-      expect(grid.hash).to eq('997dec9644e30e45fb1b06a5a58531a1')
-    end
-
-    it 'computes the same hash each time' do
-      cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
-      grid = Bongard::Grid.new(cells, 4)
-      expect(grid.hash).to eq(grid.hash)
-    end
-
-    it 'computes a hash' do
-      cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-      grid = Bongard::Grid.new(cells, 3)
-      expect(grid.hash).to eq('4465827426a5fff877ca7c2b8cc1aab5')
-    end
-  end
+  # describe '#to_json' do
+  #   it 'converts the grid object to JSON' do
+  #     cells = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+  #     grid = Bongard::Grid.new(cells, 4)
+  #     grid_as_json = '[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]'
+  #     expect(grid.to_json).to eq(grid_as_json)
+  #   end
+  # end
 
   describe '#rotate' do
     before(:all) do

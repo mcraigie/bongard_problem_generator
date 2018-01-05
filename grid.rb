@@ -5,8 +5,7 @@
 require './errors.rb'
 require './cell.rb'
 require './pattern.rb'
-
-require 'digest'
+require 'json'
 
 module Bongard
   # cell_data comes in like this:
@@ -37,6 +36,14 @@ module Bongard
       @cells = @rows.flatten
     end
 
+    def self.random_cell_data(varieties, size)
+      Array.new(size * size) { rand(1..varieties) }.each_slice(size).to_a
+    end
+
+    def self.random(varieties = 3, size = 3)
+      new(random_cell_data(varieties, size), size)
+    end
+
     def conforms_to_size?(cell_data)
       return false if cell_data.length != @size
       return false unless cell_data.all? { |row| row.length == @size }
@@ -61,6 +68,22 @@ module Bongard
       end
 
       @cells_primed = true
+    end
+
+    def self.each_coord(size = 3, &block)
+      (1..size).to_a.repeated_permutation(2).each(&block)
+    end
+
+    def self.each_row(size = 3, &block)
+      (1..size).each(&block)
+    end
+
+    def self.each_col(size = 3, &block)
+      (1..size).each(&block)
+    end
+
+    def self.each_variety(varieties = [1, 2, 3], &block)
+      varieties.each(&block)
     end
 
     def each(&block)
@@ -103,7 +126,7 @@ module Bongard
 
     def edge_cells
       return @edge_cells if @edge_cells
-      result =  cells_in_row(1) # top row
+      result =  [*cells_in_row(1)] # top row
       result << cells_in_row(size) # bottom row
       result << cells_in_col(1)[1..-2] # left column (sans corners)
       result << cells_in_col(size)[1..-2] # right column (sans corners)
@@ -112,7 +135,7 @@ module Bongard
 
     def corner_cells
       return @corner_cells if @corner_cells
-      result = cells_in_row(1).values_at(0, -1)
+      result = [*cells_in_row(1).values_at(0, -1)]
       result << cells_in_row(size).values_at(0, -1)
       @corner_cells = result.flatten
     end
@@ -185,7 +208,7 @@ module Bongard
 
     # TODO: add testing/exceptions for arguments
     def rotate(direction = :clockwise, n = 1)
-      cell_data = original_cell_data
+      cell_data = @original_cell_data
 
       n.times do
         if direction == :clockwise
@@ -195,30 +218,37 @@ module Bongard
         end
       end
 
-      Bongard::Grid.new(cell_data, size)
+      self.class.new(cell_data, size)
     end
 
     # TODO: add testing/exceptions for arguments
     def mirror(axis)
       if axis == :vertical
-        cell_data = original_cell_data.reverse
+        cell_data = @original_cell_data.reverse
       elsif axis == :horizontal
-        cell_data = original_cell_data.transpose.reverse.transpose
+        cell_data = @original_cell_data.transpose.reverse.transpose
       end
 
-      Bongard::Grid.new(cell_data, size)
+      self.class.new(cell_data, size)
     end
 
-    def to_json
-      "{rows:#{original_cell_data}}".gsub(/\s/, '')
-    end
+    # def to_json
+    #   {
+    #     id: Digest::MD5.hexdigest(@original_cell_data.to_s),
+    #     specification: @original_cell_data
+    #   }.to_json
+    # end
 
     def hash
-      Digest::MD5.hexdigest @original_cell_data.join(',')
+      @original_cell_data.to_s.hash
     end
 
     def to_s
-      "(Size:#{size}, Cells:[#{original_cell_data.join(',')}])"
+      "[#{@original_cell_data.map(&:to_s).join(",\n")}]"
+    end
+
+    def to_a
+      @original_cell_data.dup
     end
 
     def inspect
