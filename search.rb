@@ -12,7 +12,7 @@ require 'fileutils'
 def wrap_grid(grid)
   {
     id: Digest::MD5.hexdigest(grid.to_s),
-    specification: grid.to_a
+    specification: grid.to_a,
   }
 end
 
@@ -76,7 +76,7 @@ def convert_rule_to_problem(rule, other_rules)
     correctAnswerId: correct_answer_id,
     followers: followers.map { |g| wrap_grid(g) },
     rogues: rogues.map { |g| wrap_grid(g) },
-    answers: answers.shuffle.map { |g| wrap_grid(g) }
+    answers: answers.shuffle.map { |g| wrap_grid(g) },
   }
 end
 

@@ -52,5 +52,4 @@ describe Bongard::Rule do
       expect(rule.rogue?(@grid)).to be true
     end
   end
-
 end

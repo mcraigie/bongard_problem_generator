@@ -58,11 +58,11 @@ module Bongard
     def initialize(pattern_selector_string)
       @steps = pattern_selector_string.split('>').map do |raw_step|
         {
-          up:    Pattern.extract_parameter(raw_step, 'U').to_i || 0,
-          down:  Pattern.extract_parameter(raw_step, 'D').to_i || 0,
-          left:  Pattern.extract_parameter(raw_step, 'L').to_i || 0,
+          up: Pattern.extract_parameter(raw_step, 'U').to_i || 0,
+          down: Pattern.extract_parameter(raw_step, 'D').to_i || 0,
+          left: Pattern.extract_parameter(raw_step, 'L').to_i || 0,
           right: Pattern.extract_parameter(raw_step, 'R').to_i || 0,
-          test:  Regexp.new("^#{Pattern.extract_parameter(raw_step, '\?')}$")
+          test: Regexp.new("^#{Pattern.extract_parameter(raw_step, '\?')}$"),
         }
       end
     end

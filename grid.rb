@@ -60,9 +60,9 @@ module Bongard
         (1..size).each do |row_id|
           current_cell = cell_at(col_id, row_id)
 
-          current_cell.up    = cell_at(col_id,     row_id - 1)
-          current_cell.down  = cell_at(col_id,     row_id + 1)
-          current_cell.left  = cell_at(col_id - 1, row_id)
+          current_cell.up = cell_at(col_id, row_id - 1)
+          current_cell.down = cell_at(col_id, row_id + 1)
+          current_cell.left = cell_at(col_id - 1, row_id)
           current_cell.right = cell_at(col_id + 1, row_id)
         end
       end
@@ -126,7 +126,7 @@ module Bongard
 
     def edge_cells
       return @edge_cells if @edge_cells
-      result =  [*cells_in_row(1)] # top row
+      result = [*cells_in_row(1)] # top row
       result << cells_in_row(size) # bottom row
       result << cells_in_col(1)[1..-2] # left column (sans corners)
       result << cells_in_col(size)[1..-2] # right column (sans corners)

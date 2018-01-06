@@ -8,6 +8,7 @@ require './grid.rb'
 module Bongard
   class Rule
     attr_reader :description
+
     def initialize(description, &block)
       raise RuleError unless block_given?
       @rule_proc = block

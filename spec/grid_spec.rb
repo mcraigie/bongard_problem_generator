@@ -5,7 +5,6 @@
 require_relative '../grid.rb'
 
 describe Bongard::Grid do
-
   describe '#initialize' do
     it 'fails if the cell data does not match the size' do
       cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
@@ -73,7 +72,7 @@ describe Bongard::Grid do
         6 => 1,
         7 => 1,
         8 => 1,
-        9 => 1
+        9 => 1,
       })
     end
   end
@@ -163,23 +162,23 @@ describe Bongard::Grid do
     end
 
     it 'gets the cell at the specified position' do
-      expect(@grid.cell_at(3,3).value).to eq(9)
+      expect(@grid.cell_at(3, 3).value).to eq(9)
     end
 
     it 'returns nil if you specify a cell that does not exist' do
-      expect(@grid.cell_at(0,0)).to be_nil
+      expect(@grid.cell_at(0, 0)).to be_nil
     end
 
     it 'returns nil if you specify a cell that does not exist' do
-      expect(@grid.cell_at(0,1)).to be_nil
+      expect(@grid.cell_at(0, 1)).to be_nil
     end
 
     it 'returns nil if you specify a cell that does not exist' do
-      expect(@grid.cell_at(4,0)).to be_nil
+      expect(@grid.cell_at(4, 0)).to be_nil
     end
 
     it 'returns nil if you specify a cell that does not exist' do
-      expect(@grid.cell_at(4,4)).to be_nil
+      expect(@grid.cell_at(4, 4)).to be_nil
     end
   end
 
@@ -505,5 +504,4 @@ describe Bongard::Grid do
       expect(@grid_2a.mirror(:horizontal)).to eq(@grid_2c)
     end
   end
-
 end

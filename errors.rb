@@ -20,7 +20,6 @@ class CellDataNilError < StandardError
   end
 end
 
-
 class RuleError < StandardError
   def initialize(msg = 'Problem with rule')
     super(msg)

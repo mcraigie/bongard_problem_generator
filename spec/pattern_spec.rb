@@ -51,10 +51,10 @@ describe Bongard::Pattern do
     it 'converts the pattern into a chain of steps' do
       pattern = '(?1)>(R2,?3)>(D1,?7)>(L1,?6)'
       expected_steps = [
-        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^1$/},
-        {:up=>0, :down=>0, :left=>0, :right=>2, :test=>/^3$/},
-        {:up=>0, :down=>1, :left=>0, :right=>0, :test=>/^7$/},
-        {:up=>0, :down=>0, :left=>1, :right=>0, :test=>/^6$/}
+        {:up => 0, :down => 0, :left => 0, :right => 0, :test => /^1$/},
+        {:up => 0, :down => 0, :left => 0, :right => 2, :test => /^3$/},
+        {:up => 0, :down => 1, :left => 0, :right => 0, :test => /^7$/},
+        {:up => 0, :down => 0, :left => 1, :right => 0, :test => /^6$/},
       ]
       expect(Bongard::Pattern.new(pattern).steps).to eq(expected_steps)
     end
@@ -62,8 +62,8 @@ describe Bongard::Pattern do
     it 'converts the pattern into a chain of steps' do
       pattern = '(?10)>(R20,?3)'
       expected_steps = [
-        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^10$/},
-        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/^3$/}
+        {:up => 0, :down => 0, :left => 0, :right => 0, :test => /^10$/},
+        {:up => 0, :down => 0, :left => 0, :right => 20, :test => /^3$/},
       ]
       expect(Bongard::Pattern.new(pattern).steps).to eq(expected_steps)
     end
@@ -71,8 +71,8 @@ describe Bongard::Pattern do
     it 'handles a wildcard test' do
       pattern = '(?.+)>(R20,?3)'
       expected_steps = [
-        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^.+$/},
-        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/^3$/}
+        {:up => 0, :down => 0, :left => 0, :right => 0, :test => /^.+$/},
+        {:up => 0, :down => 0, :left => 0, :right => 20, :test => /^3$/},
       ]
       expect(Bongard::Pattern.new(pattern).steps).to eq(expected_steps)
     end
@@ -80,8 +80,8 @@ describe Bongard::Pattern do
     it 'handles a negated test' do
       pattern = '(?[^1])>(R20,?3)'
       expected_steps = [
-        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^[^1]$/},
-        {:up=>0, :down=>0, :left=>0, :right=>20, :test=>/^3$/}
+        {:up => 0, :down => 0, :left => 0, :right => 0, :test => /^[^1]$/},
+        {:up => 0, :down => 0, :left => 0, :right => 20, :test => /^3$/},
       ]
       expect(Bongard::Pattern.new(pattern).steps).to eq(expected_steps)
     end
@@ -89,8 +89,8 @@ describe Bongard::Pattern do
     it 'handles multiple deltas in a single step' do
       pattern = '(?1)>(R1,D3,?.+)'
       expected_steps = [
-        {:up=>0, :down=>0, :left=>0, :right=>0, :test=>/^1$/},
-        {:up=>0, :down=>3, :left=>0, :right=>1, :test=>/^.+$/}
+        {:up => 0, :down => 0, :left => 0, :right => 0, :test => /^1$/},
+        {:up => 0, :down => 3, :left => 0, :right => 1, :test => /^.+$/},
       ]
       expect(Bongard::Pattern.new(pattern).steps).to eq(expected_steps)
     end
