@@ -8,15 +8,15 @@ require './rule.rb'
 module Bongard
   class RuleSet
     def self.all
-      rules = []
-      rules += rows
-      rules += columns
-      rules += anywhere
-      rules += corner_cells
-      rules += edge_cells
-      rules += rotated
-      rules += mirrored
-      rules
+      rules = [
+        rows,
+        columns,
+        anywhere,
+        corner_cells,
+        edge_cells,
+        rotated,
+        mirrored
+      ].flatten
     end
 
     def self.rows
