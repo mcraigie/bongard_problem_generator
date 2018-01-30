@@ -232,15 +232,15 @@ module Bongard
       self.class.new(cell_data, size)
     end
 
-    # def to_json
-    #   {
-    #     id: Digest::MD5.hexdigest(@original_cell_data.to_s),
-    #     specification: @original_cell_data
-    #   }.to_json
-    # end
+    def hexdigest
+      Digest::MD5.hexdigest(to_s)
+    end
 
-    def hash
-      @original_cell_data.to_s.hash
+    def to_h
+      {
+        id: hexdigest,
+        specification: to_a,
+      }
     end
 
     def to_s
