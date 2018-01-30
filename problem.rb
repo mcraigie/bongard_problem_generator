@@ -10,6 +10,7 @@ require 'digest'
 module Bongard
   class Problem
 
+    # TODO: add error checking, split giant method into smaller pieces
     def initialize(rule, other_rules, verbose: false)
       @rule = rule
 
