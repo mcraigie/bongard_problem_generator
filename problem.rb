@@ -9,17 +9,20 @@ require 'digest'
 
 module Bongard
   class Problem
-
-    # TODO: add error checking, split giant method into smaller pieces
+    # TODO: add error checking
     def initialize(rule, other_rules, verbose: false)
       @rule = rule
 
       puts "Finding diagrams for: #{@rule.description}" if verbose
+
+      find_demonstration_diagrams(other_rules, verbose: verbose)
+      find_answer_diagrams
+    end
+
+    def find_demonstration_diagrams(other_rules, verbose: false)
       @followers = Set.new
       @rogues = Set.new
-      @correct_answer = nil
-      incorrect_answers = Set.new
-    
+
       loop do
         grid = Bongard::Grid.random
         grid_follows_rule = @rule.follower?(grid)
@@ -42,26 +45,31 @@ module Bongard
         break if non_covered_overlapping_rules.empty?
         puts "Conflict found with #{non_covered_overlapping_rules}. Retrying." if verbose
       end
-    
+    end
+
+    def find_answer_diagrams
+      @correct_answer = nil
+      @incorrect_answers = Set.new
+
       loop do
         grid = Bongard::Grid.random
     
         if @rule.follower?(grid)
           @correct_answer = grid
         else
-          incorrect_answers.add(grid)
-          incorrect_answers = incorrect_answers.to_a.last(2).to_set
+          @incorrect_answers.add(grid)
+          @incorrect_answers = @incorrect_answers.to_a.last(2).to_set
         end
     
         if !@correct_answer.nil? &&
-           incorrect_answers.length == 2 &&
+           @incorrect_answers.length == 2 &&
            !@followers.include?(@correct_answer) &&
-           !@rogues.intersect?(incorrect_answers)
+           !@rogues.intersect?(@incorrect_answers)
           break
         end
       end
 
-      @answers = [@correct_answer, incorrect_answers.to_a].flatten.shuffle
+      @answers = [@correct_answer, @incorrect_answers.to_a].flatten.shuffle
     end
 
     def to_h
